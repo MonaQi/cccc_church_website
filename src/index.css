@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  /* Premium Minimalist Palette */
+  --color-white: #FFFFFF;
+  --color-soft-white: #FAF9F7;
+  --color-light-stone: #F2F0EC;
+  --color-navy: #1F2D3D;
+  --color-grey: #6B7280;
+  --color-burgundy: #A64B4B;
+  --color-beige: #D9CBB8;
+  
+  /* Typography */
+  --font-serif: "Playfair Display", "Georgia", serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+body {
+  @apply bg-white text-navy antialiased;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+.markdown-body {
+  @apply text-grey leading-relaxed;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: #F2F0EC;
+  color: #1F2D3D;
+}
