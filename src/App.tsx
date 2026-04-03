@@ -1,21 +1,28 @@
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Menu, 
-  X, 
-  MapPin, 
-  Clock, 
-  Phone, 
-  Mail, 
-  ChevronRight, 
-  Globe, 
-  Users, 
-  BookOpen, 
-  Heart, 
+import englishLogo from './assets/english_logo.jpg';
+import chineseLogo from './assets/chinese_logo.jpg';
+import activitiesImg from './assets/Activities.jpg';
+import massScheduleImg from './assets/mass_schedule.jpg';
+import profileImg from './assets/profile.jpg';
+
+import {
+  Menu,
+  X,
+  MapPin,
+  Clock,
+  Phone,
+  Mail,
+  ChevronRight,
+  Globe,
+  Users,
+  BookOpen,
+  Heart,
   Calendar,
   Image as ImageIcon,
   MessageSquare,
@@ -224,12 +231,21 @@ const translations: Record<Language, Translation> = {
 
 // --- Components ---
 
-const Logo = ({ className = "w-12 h-12" }: { className?: string }) => (
-  <div className={`relative flex items-center justify-center bg-burgundy rounded-full text-white font-bold ${className}`}>
-    <span className="text-xl">C</span>
-    <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-navy rounded-full border-2 border-white flex items-center justify-center text-[8px]">
-      ✝
-    </div>
+const Logo = ({
+  src,
+  alt,
+  className = "w-12 h-12",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) => (
+  <div className={className}>
+    <img
+      src={src}
+      alt={alt}
+      className="w-full h-full object-contain"
+    />
   </div>
 );
 
@@ -285,12 +301,17 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white text-navy font-sans selection:bg-light-stone selection:text-navy">
-      
+
       {/* --- Navigation --- */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-4' : 'bg-transparent py-8'}`}>
         <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 cursor-pointer group" onClick={() => scrollTo('home')}>
-            <Logo className="w-10 h-10 transition-transform group-hover:scale-105" />
+
+            <Logo
+              src={lang === 'en' ? englishLogo : chineseLogo}
+              alt="CCCC Logo"
+              className="w-50 h-50 transition-transform group-hover:scale-105"
+            />
             <div className="hidden md:block">
               <h1 className="text-xs font-bold text-navy leading-tight uppercase tracking-[0.2em]">CCCC</h1>
               <p className="text-[9px] text-grey font-medium uppercase tracking-wider">Christchurch Catholic Chinese Community</p>
@@ -300,15 +321,15 @@ export default function App() {
           {/* Desktop Nav */}
           <div className="hidden lg:flex items-center gap-10">
             {navLinks.map(link => (
-              <button 
-                key={link.id} 
+              <button
+                key={link.id}
                 onClick={() => scrollTo(link.id)}
                 className="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/60 hover:text-burgundy transition-colors"
               >
                 {link.label}
               </button>
             ))}
-            <button 
+            <button
               onClick={toggleLang}
               className="flex items-center gap-2 px-5 py-2 rounded-full border border-light-stone text-[10px] font-bold uppercase tracking-widest hover:bg-light-stone transition-all"
             >
@@ -332,7 +353,7 @@ export default function App() {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -340,15 +361,15 @@ export default function App() {
           >
             <div className="flex flex-col gap-8 text-center">
               {navLinks.map(link => (
-                <button 
-                  key={link.id} 
+                <button
+                  key={link.id}
                   onClick={() => scrollTo(link.id)}
                   className="text-2xl font-serif text-navy hover:text-burgundy transition-colors"
                 >
                   {link.label}
                 </button>
               ))}
-              <button 
+              <button
                 onClick={toggleLang}
                 className="mt-4 text-sm font-bold uppercase tracking-widest text-burgundy"
               >
@@ -362,22 +383,21 @@ export default function App() {
       {/* --- Hero Section --- */}
       <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-soft-white">
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1548625361-195fe5771830?auto=format&fit=crop&q=80&w=2000" 
-            alt="Church Interior" 
-            className="w-full h-full object-cover opacity-15 grayscale-[0.5]"
-            referrerPolicy="no-referrer"
+          <img
+            src={profileImg}
+            alt="Christchurch Catholic Chinese Community"
+            className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-soft-white/20 via-transparent to-white" />
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="relative z-10 text-center px-8 max-w-5xl"
         >
-          <Logo className="w-20 h-20 mx-auto mb-12 shadow-sm" />
+
           <h1 className="text-4xl md:text-7xl font-serif text-navy mb-6 leading-[1.1] tracking-tight">
             {t.hero.title}
           </h1>
@@ -389,14 +409,14 @@ export default function App() {
             {t.hero.welcome}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-            <button 
+            <button
               onClick={() => scrollTo('mass')}
               className="w-full sm:w-auto px-12 py-5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-navy/90 transition-all shadow-sm flex items-center justify-center gap-3"
             >
               <Clock className="w-3 h-3" />
               {t.hero.ctaMass}
             </button>
-            <button 
+            <button
               onClick={() => scrollTo('contact')}
               className="w-full sm:w-auto px-12 py-5 bg-transparent text-navy border border-navy/10 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-light-stone transition-all flex items-center justify-center gap-3"
             >
@@ -407,7 +427,7 @@ export default function App() {
         </motion.div>
 
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-30">
-          <motion.div 
+          <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
@@ -419,9 +439,9 @@ export default function App() {
       {/* --- Mass Time Section --- */}
       <section id="mass" className="py-32 px-8 max-w-7xl mx-auto">
         <SectionTitle subtitle="Holy Eucharist">{t.mass.title}</SectionTitle>
-        
-        <div className="grid lg:grid-cols-2 gap-20 items-stretch">
-          <motion.div 
+
+        <div className="grid lg:grid-cols-2 gap-20 items-start">
+          <motion.div
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             viewport={{ once: true }}
@@ -450,9 +470,9 @@ export default function App() {
               </div>
 
               <div className="pt-4">
-                <a 
-                  href="https://maps.google.com/?q=St+Bernadette’s+Catholic+Church+Christchurch" 
-                  target="_blank" 
+                <a
+                  href="https://maps.google.com/?q=St+Bernadette’s+Catholic+Church+Christchurch"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-burgundy hover:text-navy transition-colors"
                 >
@@ -461,8 +481,17 @@ export default function App() {
               </div>
             </div>
 
+            <div className="mt-12 bg-white rounded-2xl overflow-hidden shadow-sm border border-light-stone flex items-center justify-center p-4">
+              <img
+                src={massScheduleImg}
+                alt="Mass Schedule"
+                className="w-full h-auto object-contain rounded-xl"
+              />
+            </div>
+
+
             <div className="mt-16 aspect-video bg-white rounded-2xl overflow-hidden relative shadow-sm border border-light-stone">
-              <iframe 
+              <iframe
                 title="Map"
                 className="w-full h-full border-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2892.427674488426!2d172.564758376831!3d-43.53513476283594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6d318a6666666667%3A0x8888888888888888!2sSt%20Bernadette's%20Catholic%20Church!5e0!3m2!1sen!2snz!4v1710000000000!5m2!1sen!2snz"
@@ -471,19 +500,23 @@ export default function App() {
             </div>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             viewport={{ once: true }}
             className="flex flex-col"
           >
-            <div className="bg-navy text-white p-12 md:p-16 rounded-[2rem] flex-grow shadow-lg">
+            <div className="bg-navy text-white p-12 md:p-16 rounded-[2rem] shadow-lg h-full">
               <h3 className="text-xs font-bold uppercase tracking-[0.3em] mb-10 text-champagne">
                 {t.mass.posterTitle}
               </h3>
-              <div className="aspect-[3/4] bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center text-center p-12 group transition-colors hover:bg-white/10">
-                <ImageIcon className="w-12 h-12 text-white/10 mb-6 transition-transform group-hover:scale-110" />
-                <p className="text-white/30 italic font-light text-sm tracking-wide">{t.mass.posterPlaceholder}</p>
+
+              <div className="rounded-2xl overflow-hidden border border-white/10">
+                <img
+                  src={activitiesImg}
+                  alt="Announcements"
+                  className="w-full h-auto block"
+                />
               </div>
             </div>
           </motion.div>
@@ -494,7 +527,7 @@ export default function App() {
       <section id="about" className="py-32 bg-soft-white">
         <div className="max-w-7xl mx-auto px-8">
           <SectionTitle subtitle="Our Journey">{t.about.title}</SectionTitle>
-          
+
           <div className="grid lg:grid-cols-12 gap-24 items-center">
             <div className="lg:col-span-7 space-y-12 text-base md:text-lg text-grey leading-relaxed font-light">
               <p className="text-navy font-serif text-2xl italic leading-snug">
@@ -502,7 +535,7 @@ export default function App() {
               </p>
               <p>{t.about.journey}</p>
               <p>{t.about.pastoral}</p>
-              
+
               <div className="bg-white p-12 rounded-[2rem] border border-light-stone shadow-sm mt-16">
                 <div className="flex items-center gap-4 mb-8">
                   <Heart className="w-5 h-5 text-burgundy" />
@@ -522,9 +555,9 @@ export default function App() {
 
             <div className="lg:col-span-5 relative">
               <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
-                <img 
-                  src="https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&q=80&w=1000" 
-                  alt="Faith Community" 
+                <img
+                  src="https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&q=80&w=1000"
+                  alt="Faith Community"
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
@@ -541,7 +574,7 @@ export default function App() {
       {/* --- Activities Section --- */}
       <section id="activities" className="py-32 px-8 max-w-7xl mx-auto">
         <SectionTitle subtitle="Growing Together">{t.activities.title}</SectionTitle>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           {[
             { ...t.activities.alpha, icon: Globe },
@@ -550,7 +583,7 @@ export default function App() {
             { ...t.activities.legion, icon: Users },
             { ...t.activities.youth, icon: Calendar, isYouth: true },
           ].map((activity, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               whileHover={{ y: -10 }}
               className="bg-white p-12 rounded-[2.5rem] border border-light-stone flex flex-col h-full transition-all hover:shadow-xl hover:border-transparent"
@@ -574,14 +607,15 @@ export default function App() {
       <section id="gallery" className="py-32 bg-soft-white">
         <div className="max-w-7xl mx-auto px-8">
           <SectionTitle subtitle="Moments">{t.gallery.title}</SectionTitle>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className="aspect-square bg-white rounded-[2rem] border border-light-stone flex flex-col items-center justify-center group cursor-wait transition-all hover:shadow-md">
-                <ImageIcon className="w-8 h-8 text-light-stone group-hover:text-beige transition-colors" />
-                <span className="mt-6 text-[9px] uppercase tracking-[0.3em] text-grey/30 font-bold">{t.gallery.comingSoon}</span>
-              </div>
-            ))}
+
+          <div className="max-w-xl mx-auto">
+            <div className="bg-white rounded-[2rem] border border-light-stone overflow-hidden transition-all hover:shadow-md">
+              <img
+                src={profileImg}
+                alt="Gallery"
+                className="w-full h-auto object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -606,13 +640,13 @@ export default function App() {
       <section id="contact" className="py-32 bg-light-stone/30">
         <div className="max-w-7xl mx-auto px-8">
           <SectionTitle subtitle="Get in Touch">{t.contact.title}</SectionTitle>
-          
+
           <div className="grid lg:grid-cols-12 gap-24">
             <div className="lg:col-span-5 space-y-16">
               <p className="text-lg text-grey leading-relaxed font-light">
                 {t.contact.welcome}
               </p>
-              
+
               <div className="space-y-10">
                 <div className="flex gap-6">
                   <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
@@ -686,7 +720,11 @@ export default function App() {
           <div className="grid md:grid-cols-3 gap-20 mb-24">
             <div className="space-y-10">
               <div className="flex items-center gap-4">
-                <Logo className="w-12 h-12" />
+                <Logo
+                  src={lang === 'en' ? englishLogo : chineseLogo}
+                  alt="CCCC Logo"
+                  className="w-full h-full object-contain"
+                />
                 <div>
                   <h2 className="text-lg font-bold text-navy leading-tight tracking-tight uppercase">CCCC</h2>
                   <p className="text-[9px] text-grey uppercase tracking-widest">Christchurch Catholic Chinese Community</p>
