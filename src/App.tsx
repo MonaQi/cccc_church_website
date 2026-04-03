@@ -19,6 +19,7 @@ import {
   Phone,
   Mail,
   ChevronRight,
+  ChevronLeft,
   Globe,
   Users,
   BookOpen,
@@ -26,11 +27,11 @@ import {
   Calendar,
   Image as ImageIcon,
   MessageSquare,
-  Facebook,
-  Instagram,
-  Youtube
+  Facebook
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import Library from './pages/Library';
+import Gallery from './pages/Gallery';
 
 // --- Types ---
 type Language = 'en' | 'zh';
@@ -136,9 +137,36 @@ const translations: Record<Language, Translation> = {
     },
     activities: {
       title: 'Activities & Events',
-      alpha: { name: 'Chinese Alpha Course', desc: 'Explore the basics of the Christian faith in a friendly, open environment.' },
-      bible: { name: 'Bible Sharing', desc: 'Deepen your understanding of the Word of God through communal reflection.' },
-      catechism: { name: 'Catechetical Teaching', desc: 'Structured learning about the Catholic faith and traditions.' },
+      alpha: {
+        name: 'Chinese Alpha Course',
+        desc: `Welcome to those who are curious about faith, new to the environment,
+or looking to know God better.
+
+The course is conducted in a relaxed way: dining together, watching short videos, and free discussion.
+Whether you are an old believer, a new believer, or have no religious background,
+you can ask questions and explore life and faith in a familiar Chinese environment.`
+      },
+      bible: {
+        name: 'Bible Sharing',
+        desc: `In our relaxed sharing and discussion,
+let us listen to and reflect on God's word together,
+grow in the Holy Word, and receive strength and peace.
+
+We sincerely invite you to join our online sharing:
+Every Saturday at 8:45 PM`
+      },
+      catechism: {
+        name: 'Catechetical Teaching',
+        desc: `✨ Know Christ, Experience Christ, Live Christ ✨
+
+Longing to know God better?
+Want to accompany each other on the faith journey?
+Hope to live out Christ more in life?
+
+📖 Welcome to join the Youcat group meeting
+📅 Once a month | Fourth Sunday afternoon
+⏰ 1:30 – 3:30 PM`
+      },
       legion: { name: 'Legion of Mary', desc: 'A lay apostolic association serving the Church through prayer and service.' },
       youth: { name: 'Youth Community', desc: 'A space for the younger generation to grow in faith together.', status: 'To be developed' },
     },
@@ -193,15 +221,42 @@ const translations: Record<Language, Translation> = {
       title: '关于我们',
       overview: '基督城华人天主教团体 (CCCC) 隶属于天主教基督城教区，支持教区在华人教友中的牧灵使命。团体主要服务来自中国大陆、台湾、香港、澳门、新加坡、马来西亚、印度尼西亚等地的华语教友，提供信仰培育、灵性活动以及植根于中华传统的文化交流平台。',
       journey: '2014年，Clement Covacho 神父注意到许多华人教友在参加英语弥撒时遇到语言困难。为了响应他们的牧灵需求，他向当时的基督城主教 Barry Jones 申请举行华语圣诞弥撒。在神父和教友的共同努力下，团体逐渐成形。',
-      pastoral: '目前，团体每月举行一次华语弥撒，并组织各种信仰培育活动，包括华语启发布道会、圣经分享、教理讲授和圣母军等。',
+      pastoral: 'At present, the community celebrates one Chinese Mass each month and organizes various faith formation activities, including the Chinese Alpha Course, Bible sharing, catechetical teaching, and the Legion of Mary.',
       contactPerson: '联系人：Angeline Wong (0211918001)',
       welcomeMsg: '我们热烈欢迎所有华人教友以及任何对天主教信仰感兴趣的人加入我们的祈祷、团契和灵性成长。',
     },
     activities: {
       title: '活动与团体',
-      alpha: { name: '华语启发布道会', desc: '在友好、开放的环境中探索基督信仰的基础。' },
-      bible: { name: '圣经分享', desc: '通过共同反思，加深对天主圣言的理解。' },
-      catechism: { name: '教理讲授', desc: '系统学习天主教信仰与传统。' },
+      alpha: {
+        name: '华人启发（Alpha）课程',
+        desc: `欢迎对信仰好奇、刚来到新环境、
+更想认识天主的朋友参加。
+
+课程以轻松方式进行：一起用餐、观看短片、自由讨论。
+无论您是老教友、新教友，或尚无任何宗教背景，
+都能在熟悉的中文环境中，提出问题、探索生命与信仰。`
+      },
+      bible: {
+        name: '圣经分享与学习',
+        desc: `让我们在轻松的分享与讨论中，
+一起聆听、思考天主的话语，
+在圣言中成长，领受力量与平安。
+
+诚挚邀请您加入我们的线上分享：
+每周六晚 8:45PM`
+      },
+      catechism: {
+        name: '天主教教理研读（轻松版）',
+        desc: `✨ 认识基督，经历基督，活出基督 ✨
+
+渴望更认识天主？
+想在信仰旅途中彼此陪伴？
+希望在生活中更活出基督？
+
+📖 欢迎加入 Youcat 小组聚会
+📅 每月一次｜第四个主日下午
+⏰ 1:30 – 3:30 PM`
+      },
       legion: { name: '圣母军', desc: '通过祈祷和服务为教会服务的教友使徒团体。' },
       youth: { name: '青年团体', desc: '为年轻一代提供的共同成长空间。', status: '开发中' },
     },
@@ -244,7 +299,7 @@ const Logo = ({
     <img
       src={src}
       alt={alt}
-      className="w-full h-full object-contain"
+      className="w-full h-full object-contain mix-blend-multiply"
     />
   </div>
 );
@@ -257,12 +312,91 @@ const SectionTitle = ({ children, subtitle }: { children: React.ReactNode, subti
   </div>
 );
 
+const PosterCarousel = ({ images }: { images: string[] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const next = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const prev = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center group">
+      <div className="w-full relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={currentIndex}
+            src={images[currentIndex]}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-auto object-contain rounded-2xl border border-white/10 shadow-lg"
+            alt={`Poster ${currentIndex + 1}`}
+          />
+        </AnimatePresence>
+
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prev}
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-navy/50 text-white backdrop-blur-md opacity-100 md:opacity-0 group-hover:opacity-100 transition-all hover:bg-navy border border-white/20"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-navy/50 text-white backdrop-blur-md opacity-100 md:opacity-0 group-hover:opacity-100 transition-all hover:bg-navy border border-white/20"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          </>
+        )}
+      </div>
+      
+      {/* Dots */}
+      <div className="flex gap-2 mt-6 justify-center">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentIndex(i)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              currentIndex === i ? 'bg-champagne w-8' : 'bg-white/20 hover:bg-white/40'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function App() {
   const [lang, setLang] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeTabId, setActiveTabId] = useState('library');
+  const [currentPage, setCurrentPage] = useState<'home' | 'library' | 'gallery'>('home');
+  const [isPosterOpen, setIsPosterOpen] = useState(false);
 
   const t = translations[lang];
+
+  const activitiesList = [
+    {
+      id: 'library',
+      name: lang === 'en' ? 'Community Library' : '网页数字图书馆',
+      desc: lang === 'en' 
+        ? 'We are setting up the Christchurch Catholic Chinese Community Library. We welcome donations of Chinese Catholic books to enrich our resources.'
+        : '我们正在建立基督城天主教华人团体图书馆，欢迎大家踊跃捐赠中文天主教图书、学习手册及刊物，丰富图书资源，也方便日后借阅。',
+      icon: BookOpen,
+      action: () => { setCurrentPage('library'); window.scrollTo(0, 0); },
+      actionText: lang === 'en' ? 'Enter Library' : '进入图书馆'
+    },
+    { ...t.activities.alpha, id: 'alpha', icon: Globe, actionText: lang === 'en' ? 'Contact to Join' : '联系加入' },
+    { ...t.activities.bible, id: 'bible', icon: BookOpen, actionText: lang === 'en' ? 'Contact to Join' : '联系加入' },
+    { ...t.activities.catechism, id: 'catechism', icon: Heart, actionText: lang === 'en' ? 'Contact to Join' : '联系加入' },
+    { ...t.activities.legion, id: 'legion', icon: Users, actionText: lang === 'en' ? 'Contact to Join' : '联系加入' },
+    { ...t.activities.youth, id: 'youth', icon: Calendar, isYouth: true, actionText: lang === 'en' ? 'Contact to Join' : '联系加入' },
+  ];
+
+  const activeActivity = activitiesList.find(a => a.id === activeTabId) || activitiesList[0];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -283,20 +417,30 @@ export default function App() {
   ];
 
   const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = el.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
     setIsMenuOpen(false);
+
+    const doScroll = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        const offset = 80;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = el.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    if (currentPage !== 'home') {
+      setCurrentPage('home');
+      setTimeout(doScroll, 100);
+    } else {
+      doScroll();
+    }
   };
 
   return (
@@ -307,11 +451,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 cursor-pointer group" onClick={() => scrollTo('home')}>
 
-            <Logo
-              src={lang === 'en' ? englishLogo : chineseLogo}
-              alt="CCCC Logo"
-              className="w-16 h-16 md:w-20 md:h-20 transition-transform group-hover:scale-105"
-            />
+            <img src={lang === 'en' ? englishLogo : chineseLogo} alt="Logo" className="h-12 sm:h-24 md:h-32 lg:h-36 drop-shadow-sm transition-transform hover:scale-105" />
             <div className="hidden md:block">
               <h1 className="text-xs font-bold text-navy leading-tight uppercase tracking-[0.2em]">CCCC</h1>
               <p className="text-[9px] text-grey font-medium uppercase tracking-wider">Christchurch Catholic Chinese Community</p>
@@ -331,7 +471,7 @@ export default function App() {
             ))}
             <button
               onClick={toggleLang}
-              className="flex items-center gap-2 px-5 py-2 rounded-full border border-light-stone text-[10px] font-bold uppercase tracking-widest hover:bg-light-stone transition-all"
+              className="flex items-center gap-2 px-5 py-2 rounded-full border border-light-stone text-[10px] font-bold uppercase tracking-widest hover:bg-soft-white transition-all bg-white"
             >
               <Globe className="w-3 h-3 text-navy" />
               {lang === 'en' ? '中文' : 'English'}
@@ -339,12 +479,17 @@ export default function App() {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="lg:hidden flex items-center gap-4">
-            <button onClick={toggleLang} className="p-2 text-navy/60">
-              <Globe className="w-5 h-5" />
+          <div className="lg:hidden flex items-center gap-3">
+            <button 
+              onClick={toggleLang} 
+              className="w-9 h-9 rounded-full border border-light-stone hover:bg-soft-white transition-colors flex items-center justify-center shadow-sm bg-white"
+            >
+               <span className="text-[10px] font-bold text-burgundy tracking-widest pl-0.5">
+                 {lang === 'en' ? '中' : 'EN'}
+               </span>
             </button>
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2 text-navy">
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="w-9 h-9 flex items-center justify-center text-navy border border-light-stone rounded-full shadow-sm bg-white hover:bg-soft-white transition-colors">
+              {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </div>
@@ -380,7 +525,9 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* --- Hero Section --- */}
+      {currentPage === 'home' ? (
+        <main>
+          {/* --- Hero Section --- */}
       <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-soft-white">
         <div className="absolute inset-0 z-0">
           <img
@@ -395,7 +542,7 @@ export default function App() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="relative z-10 text-center px-8 max-w-5xl"
+          className="relative z-10 text-center px-8 max-w-5xl pt-24 md:pt-0"
         >
 
           <h1 className="text-4xl md:text-7xl font-serif text-navy mb-6 leading-[1.1] tracking-tight">
@@ -436,136 +583,91 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- Mass Time Section --- */}
-      <section id="mass" className="py-32 px-8 max-w-7xl mx-auto">
-        <SectionTitle subtitle="Holy Eucharist">{t.mass.title}</SectionTitle>
+      {/* --- Sunday Mass Section --- */}
+      <section id="mass" className="py-32 px-8 max-w-3xl mx-auto">
+        <SectionTitle subtitle="Worship">{t.mass.title}</SectionTitle>
 
-        <div className="grid lg:grid-cols-2 gap-20 items-start">
-          <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            className="bg-soft-white p-12 md:p-16 rounded-[2rem] flex flex-col justify-between border border-light-stone/50"
-          >
-            <div className="space-y-12">
-              <div className="flex gap-8">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
-                  <Clock className="w-5 h-5 text-burgundy" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold text-navy mb-3 uppercase tracking-[0.2em]">{lang === 'en' ? 'Mass Schedule' : '弥撒安排'}</h3>
-                  <p className="text-xl text-navy/80 font-serif">{t.mass.time}</p>
-                </div>
-              </div>
+        <div 
+          onClick={() => setIsPosterOpen(true)}
+          className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50 mt-16 text-center group transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-transparent cursor-pointer relative overflow-hidden"
+        >
+          {/* Subtle background glow on hover */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-navy/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+          
+          <div className="relative z-10">
+            <h3 className="text-sm font-bold text-navy mb-4 uppercase tracking-[0.2em]">{lang === 'en' ? 'Mass Schedule' : '弥撒安排'}</h3>
+            <p className="text-xl md:text-2xl text-navy font-serif leading-snug mb-12">{t.mass.time}</p>
 
-              <div className="flex gap-8">
-                <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
-                  <MapPin className="w-5 h-5 text-burgundy" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold text-navy mb-3 uppercase tracking-[0.2em]">{lang === 'en' ? 'Location' : '地点'}</h3>
-                  <p className="text-xl text-navy/80 font-serif">{t.mass.location}</p>
-                  <p className="text-sm text-grey mt-2 font-light">76 Main South Road, Upper Riccarton, Christchurch</p>
-                </div>
-              </div>
+            <div className="w-16 h-[1px] bg-light-stone mx-auto mb-12 group-hover:bg-navy/20 transition-colors" />
 
-              <div className="pt-4">
-                <a
-                  href="https://maps.google.com/?q=St+Bernadette’s+Catholic+Church+Christchurch"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-burgundy hover:text-navy transition-colors"
-                >
-                  {t.mass.viewMap} <ChevronRight className="w-3 h-3" />
-                </a>
-              </div>
+            <h3 className="text-sm font-bold text-navy mb-4 uppercase tracking-[0.2em]">{lang === 'en' ? 'Location' : '地点'}</h3>
+            <p className="text-xl md:text-2xl text-navy font-serif leading-snug mb-4">{t.mass.location}</p>
+            <p className="text-sm text-grey font-light leading-relaxed mb-12 max-w-sm mx-auto">
+              76 Main South Road, Upper Riccarton, Christchurch
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8" onClick={(e) => e.stopPropagation()}>
+               <button 
+                 onClick={() => setIsPosterOpen(true)}
+                 className="w-full sm:w-auto inline-flex justify-center items-center gap-3 px-8 py-4 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md"
+               >
+                 {lang === 'en' ? 'Poster' : '海报'} <ImageIcon className="w-3 h-3" />
+               </button>
+               <a
+                 href="https://maps.google.com/?q=St+Bernadette’s+Catholic+Church+Christchurch"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="w-full sm:w-auto inline-flex justify-center items-center gap-3 px-8 py-4 bg-white border border-light-stone rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-navy hover:bg-soft-white transition-all shadow-sm"
+               >
+                 {t.mass.viewMap} <ChevronRight className="w-3 h-3" />
+               </a>
             </div>
-
-            <div className="mt-12 bg-white rounded-2xl overflow-hidden shadow-sm border border-light-stone flex items-center justify-center p-4">
-              <img
-                src={massScheduleImg}
-                alt="Mass Schedule"
-                className="w-full h-auto object-contain rounded-xl"
-              />
-            </div>
-
-
-            <div className="mt-16 aspect-video bg-white rounded-2xl overflow-hidden relative shadow-sm border border-light-stone">
-              <iframe
-                title="Map"
-                className="w-full h-full border-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2892.427674488426!2d172.564758376831!3d-43.53513476283594!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6d318a6666666667%3A0x8888888888888888!2sSt%20Bernadette's%20Catholic%20Church!5e0!3m2!1sen!2snz!4v1710000000000!5m2!1sen!2snz"
-                loading="lazy"
-              ></iframe>
-            </div>
-          </motion.div>
-
-          <motion.div
-            whileInView={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            viewport={{ once: true }}
-            className="flex flex-col"
-          >
-            <div className="bg-navy text-white p-12 md:p-16 rounded-[2rem] shadow-lg h-full">
-              <h3 className="text-xs font-bold uppercase tracking-[0.3em] mb-10 text-champagne">
-                {t.mass.posterTitle}
-              </h3>
-
-              <div className="rounded-2xl overflow-hidden border border-white/10">
-                <img
-                  src={activitiesImg}
-                  alt="Announcements"
-                  className="w-full h-auto block"
-                />
-              </div>
-            </div>
-          </motion.div>
+          </div>
         </div>
       </section>
+
+      {/* Mass Schedule Poster Modal */}
+      <AnimatePresence>
+        {isPosterOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsPosterOpen(false)}
+            className="fixed inset-0 z-[200] bg-navy/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+          >
+            <button 
+              onClick={() => setIsPosterOpen(false)}
+              className="absolute top-6 right-6 md:top-10 md:right-10 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <motion.img 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+              src={massScheduleImg} 
+              alt="Mass Schedule Poster" 
+              className="max-w-full max-h-full rounded-[2rem] shadow-2xl object-contain bg-white"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* --- About Us Section --- */}
       <section id="about" className="py-32 bg-soft-white">
         <div className="max-w-7xl mx-auto px-8">
           <SectionTitle subtitle="Our Journey">{t.about.title}</SectionTitle>
 
-          <div className="grid lg:grid-cols-12 gap-24 items-center">
-            <div className="lg:col-span-7 space-y-12 text-base md:text-lg text-grey leading-relaxed font-light">
-              <p className="text-navy font-serif text-2xl italic leading-snug">
-                {t.about.overview}
-              </p>
+          <div className="max-w-4xl mx-auto space-y-12 text-xs md:text-sm text-grey leading-relaxed font-light">
+            <p className="text-navy font-serif text-lg md:text-xl italic leading-relaxed text-center">
+              {t.about.overview}
+            </p>
+            <div className="space-y-8 pt-10 border-t border-light-stone">
               <p>{t.about.journey}</p>
               <p>{t.about.pastoral}</p>
-
-              <div className="bg-white p-12 rounded-[2rem] border border-light-stone shadow-sm mt-16">
-                <div className="flex items-center gap-4 mb-8">
-                  <Heart className="w-5 h-5 text-burgundy" />
-                  <h4 className="text-xs font-bold text-navy uppercase tracking-[0.2em]">
-                    {lang === 'en' ? 'Welcome' : '欢迎'}
-                  </h4>
-                </div>
-                <p className="italic mb-10 text-navy/70 font-serif text-xl">{t.about.welcomeMsg}</p>
-                <div className="flex flex-col sm:flex-row gap-10 text-[10px] font-bold text-navy uppercase tracking-widest">
-                  <div className="flex items-center gap-3">
-                    <Users className="w-4 h-4 text-burgundy/40" />
-                    {t.about.contactPerson}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="lg:col-span-5 relative">
-              <div className="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl grayscale-[0.2] hover:grayscale-0 transition-all duration-1000">
-                <img
-                  src="https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&q=80&w=1000"
-                  alt="Faith Community"
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <div className="absolute -bottom-10 -left-10 bg-white p-12 rounded-[2rem] shadow-xl hidden md:block max-w-xs border border-light-stone">
-                <p className="text-[9px] font-bold text-burgundy mb-4 uppercase tracking-[0.3em]">Community Life</p>
-                <p className="text-xl font-serif italic leading-relaxed text-navy">"Where two or three are gathered in my name, I am there among them."</p>
-              </div>
             </div>
           </div>
         </div>
@@ -575,47 +677,119 @@ export default function App() {
       <section id="activities" className="py-32 px-8 max-w-7xl mx-auto">
         <SectionTitle subtitle="Growing Together">{t.activities.title}</SectionTitle>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {[
-            { ...t.activities.alpha, icon: Globe },
-            { ...t.activities.bible, icon: BookOpen },
-            { ...t.activities.catechism, icon: Heart },
-            { ...t.activities.legion, icon: Users },
-            { ...t.activities.youth, icon: Calendar, isYouth: true },
-          ].map((activity, idx) => (
-            <motion.div
-              key={idx}
-              whileHover={{ y: -10 }}
-              className="bg-white p-12 rounded-[2.5rem] border border-light-stone flex flex-col h-full transition-all hover:shadow-xl hover:border-transparent"
-            >
-              <div className="w-12 h-12 bg-soft-white rounded-full flex items-center justify-center mb-10 border border-light-stone">
-                <activity.icon className="w-5 h-5 text-navy/40" />
-              </div>
-              <h3 className="text-xs font-bold text-navy mb-6 uppercase tracking-[0.2em]">{activity.name}</h3>
-              <p className="text-grey mb-10 flex-grow font-light leading-relaxed text-sm">{activity.desc}</p>
-              {activity.isYouth && (
-                <span className="inline-block px-5 py-2 bg-light-stone text-navy/40 text-[9px] font-bold rounded-full uppercase tracking-[0.2em]">
-                  {activity.status}
-                </span>
-              )}
-            </motion.div>
-          ))}
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start mt-16">
+          
+          {/* Left Column: Tab List */}
+          <div className="lg:col-span-4 flex flex-col gap-3">
+             {activitiesList.map((activity) => {
+               const isActive = activeTabId === activity.id;
+               return (
+                 <button
+                   key={activity.id}
+                   onClick={() => setActiveTabId(activity.id)}
+                   className={`flex items-center gap-5 p-5 rounded-3xl transition-all duration-300 text-left border ${isActive ? 'bg-navy text-white border-navy shadow-lg scale-[1.02]' : 'bg-transparent text-navy hover:bg-white border-transparent hover:border-light-stone hover:shadow-sm'}`}
+                 >
+                   <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all shadow-sm ${isActive ? 'bg-white/20' : 'bg-soft-white border border-light-stone'}`}>
+                     <activity.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-burgundy'}`} />
+                   </div>
+                   <span className="font-bold text-xs uppercase tracking-[0.1em] leading-snug">{activity.name}</span>
+                 </button>
+               );
+             })}
+          </div>
+
+          {/* Right Column: Content Display */}
+          <div className="lg:col-span-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeActivity.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white p-10 md:p-14 lg:p-16 rounded-[3rem] md:rounded-[4rem] border border-light-stone shadow-xl relative overflow-hidden min-h-[500px] flex flex-col"
+              >
+                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-soft-white rounded-bl-[400px] -z-0 opacity-50" />
+                
+                <div className="relative z-10 flex-grow">
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12">
+                    <div className="w-16 h-16 bg-navy text-white rounded-3xl flex items-center justify-center shadow-lg transform -rotate-3 shrink-0">
+                      <activeActivity.icon className="w-8 h-8" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl md:text-3xl font-serif text-navy leading-tight">{activeActivity.name}</h3>
+                      {activeActivity.isYouth && activeActivity.status && (
+                        <span className="inline-block px-4 py-1.5 bg-burgundy/10 text-burgundy text-[9px] font-bold rounded-full uppercase tracking-[0.2em] mt-4">
+                          {activeActivity.status}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="w-16 h-[2px] bg-light-stone mb-12" />
+
+                  <div className="text-navy/70 leading-loose font-light md:text-lg whitespace-pre-wrap max-w-2xl text-justify">
+                    {activeActivity.desc}
+                  </div>
+                </div>
+
+                <div className="relative z-10 mt-16 pt-8 border-t border-light-stone/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                   <p className="text-sm text-grey font-serif italic max-w-[200px] md:max-w-xs leading-relaxed">
+                     {activeActivity.id === 'library' 
+                       ? (lang === 'en' ? 'Explore our digital collection' : '随时随地借阅我们的海量图书')
+                       : (lang === 'en' ? 'We welcome everyone to grow together in faith' : '我们热烈欢迎大家一起在爱与信仰中成长')
+                     }
+                   </p>
+                   {activeActivity.id === 'library' ? (
+                     <button
+                       onClick={activeActivity.action}
+                       className="px-10 py-5 bg-burgundy text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-navy transition-all hover:-translate-y-1 flex items-center justify-center gap-3 w-full sm:w-auto"
+                     >
+                       {activeActivity.actionText} <ChevronRight className="w-4 h-4" />
+                     </button>
+                   ) : (
+                     <button
+                       onClick={() => scrollTo('contact')}
+                       className="px-10 py-5 bg-navy text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-burgundy transition-all hover:-translate-y-1 flex items-center justify-center gap-3 w-full sm:w-auto"
+                     >
+                       {activeActivity.actionText} <ChevronRight className="w-4 h-4" />
+                     </button>
+                   )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          
         </div>
       </section>
 
       {/* --- Gallery Section --- */}
-      <section id="gallery" className="py-32 bg-soft-white">
-        <div className="max-w-7xl mx-auto px-8">
+      <section id="gallery" className="py-32 bg-soft-white px-8">
+        <div className="max-w-5xl mx-auto text-center">
           <SectionTitle subtitle="Moments">{t.gallery.title}</SectionTitle>
-
-          <div className="max-w-xl mx-auto">
-            <div className="bg-white rounded-[2rem] border border-light-stone overflow-hidden transition-all hover:shadow-md">
-              <img
-                src={profileImg}
-                alt="Gallery"
-                className="w-full h-auto object-cover"
-              />
-            </div>
+          <div 
+             onClick={() => {
+                setCurrentPage('gallery');
+                window.scrollTo(0, 0);
+             }}
+             className="bg-white rounded-[3rem] p-12 md:p-24 shadow-sm border border-light-stone cursor-pointer group hover:shadow-2xl hover:border-transparent transition-all relative overflow-hidden"
+          >
+             <div 
+               className="absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-30 transition-opacity duration-1000" 
+               style={{ backgroundImage: `url(${profileImg})` }} 
+             />
+             <ImageIcon className="w-12 h-12 text-navy/20 mx-auto mb-8 group-hover:text-burgundy transition-colors duration-500 group-hover:scale-110" />
+             <h3 className="text-2xl md:text-3xl font-serif text-navy mb-6">
+                {lang === 'en' ? 'Explore our moments' : '探索我们的精彩瞬间'}
+             </h3>
+             <p className="text-grey font-light max-w-xl mx-auto mb-12 relative z-10 leading-relaxed text-sm md:text-base">
+                {lang === 'en' 
+                  ? 'A visual journey through the life of the Christchurch Catholic Chinese Community. Click to enter our independent gallery and flip through our exclusive curated memories.'
+                  : '图说基督城华人天主教团体的生活点滴。点击此处进入全屏独立画廊，翻阅属于我们的独家回忆。'}
+             </p>
+             <button className="relative z-10 px-8 py-4 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-md group-hover:bg-burgundy transition-colors">
+                {lang === 'en' ? 'Open Gallery' : '打开相册图集'}
+             </button>
           </div>
         </div>
       </section>
@@ -638,81 +812,56 @@ export default function App() {
 
       {/* --- Contact Section --- */}
       <section id="contact" className="py-32 bg-light-stone/30">
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-4xl mx-auto px-8">
           <SectionTitle subtitle="Get in Touch">{t.contact.title}</SectionTitle>
 
-          <div className="grid lg:grid-cols-12 gap-24">
-            <div className="lg:col-span-5 space-y-16">
-              <p className="text-lg text-grey leading-relaxed font-light">
-                {t.contact.welcome}
-              </p>
+          <div className="text-center mb-16">
+             <p className="text-lg md:text-xl text-grey leading-relaxed font-light">
+               {t.contact.welcome}
+             </p>
+          </div>
 
-              <div className="space-y-10">
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                    <Users className="w-5 h-5 text-navy/40" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Contact Person</p>
-                    <p className="font-bold text-navy tracking-wide text-sm">Angeline Wong</p>
-                    <p className="text-grey text-xs mt-1">021 191 8001</p>
-                  </div>
+          <div className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50">
+            <div className="grid md:grid-cols-2 gap-12">
+              <div className="flex gap-6">
+                <div className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center shadow-sm shrink-0">
+                  <Users className="w-5 h-5 text-navy/40" />
                 </div>
-
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                    <Globe className="w-5 h-5 text-burgundy/40" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Languages</p>
-                    <p className="text-navy font-bold text-sm tracking-wide">Mandarin, Cantonese, English</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0">
-                    <MapPin className="w-5 h-5 text-navy/40" />
-                  </div>
-                  <div>
-                    <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Church Address</p>
-                    <p className="text-navy font-bold text-sm tracking-wide">76 Main South Road, Christchurch</p>
-                  </div>
+                <div>
+                  <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Contact Person</p>
+                  <p className="font-bold text-navy tracking-wide text-sm">Angeline Wong</p>
+                  <p className="text-grey text-xs mt-1">021 191 8001</p>
                 </div>
               </div>
-            </div>
 
-            <div className="lg:col-span-7">
-              <form className="bg-white p-12 md:p-16 rounded-[3rem] shadow-xl space-y-10 border border-light-stone/50">
-                <div className="grid md:grid-cols-2 gap-10">
-                  <div className="space-y-4">
-                    <label className="text-[10px] font-bold text-navy uppercase tracking-widest ml-1">{t.contact.formName}</label>
-                    <input type="text" className="w-full px-0 py-3 bg-transparent border-b border-light-stone focus:border-navy outline-none transition-all placeholder:text-light-stone text-sm" />
-                  </div>
-                  <div className="space-y-4">
-                    <label className="text-[10px] font-bold text-navy uppercase tracking-widest ml-1">{t.contact.formEmail}</label>
-                    <input type="text" className="w-full px-0 py-3 bg-transparent border-b border-light-stone focus:border-navy outline-none transition-all placeholder:text-light-stone text-sm" />
-                  </div>
+              <div className="flex gap-6">
+                <div className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center shadow-sm shrink-0">
+                  <Globe className="w-5 h-5 text-burgundy/40" />
                 </div>
-                <div className="space-y-4">
-                  <label className="text-[10px] font-bold text-navy uppercase tracking-widest ml-1">{t.contact.formLang}</label>
-                  <select className="w-full px-0 py-3 bg-transparent border-b border-light-stone focus:border-navy outline-none transition-all appearance-none text-sm">
-                    <option>Mandarin / 普通话</option>
-                    <option>Cantonese / 粤语</option>
-                    <option>English / 英语</option>
-                  </select>
+                <div>
+                  <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Languages</p>
+                  <p className="text-navy font-bold text-sm tracking-wide">Mandarin, Cantonese, English</p>
                 </div>
-                <div className="space-y-4">
-                  <label className="text-[10px] font-bold text-navy uppercase tracking-widest ml-1">{t.contact.formMsg}</label>
-                  <textarea rows={4} className="w-full px-0 py-3 bg-transparent border-b border-light-stone focus:border-navy outline-none transition-all placeholder:text-light-stone text-sm"></textarea>
-                </div>
-                <button type="button" className="w-full py-6 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-navy/90 transition-all shadow-md">
-                  {t.contact.formSubmit}
-                </button>
-              </form>
+              </div>
+
+
             </div>
           </div>
         </div>
       </section>
+
+        </main>
+      ) : currentPage === 'library' ? (
+        <Library lang={lang} onBack={() => {
+          setCurrentPage('home');
+          window.scrollTo(0, 0);
+        }} />
+      ) : currentPage === 'gallery' ? (
+        <Gallery lang={lang} onBack={() => {
+          setCurrentPage('home');
+          window.scrollTo(0, 0);
+        }} />
+      ) : null}
 
       {/* --- Footer --- */}
       <footer className="bg-white pt-32 pb-16 px-8 border-t border-light-stone">
@@ -751,11 +900,9 @@ export default function App() {
             <div className="space-y-10">
               <h3 className="font-bold text-navy uppercase tracking-[0.3em] text-[10px]">Follow Us</h3>
               <div className="flex gap-6">
-                {[Facebook, Instagram, Youtube].map((Icon, i) => (
-                  <button key={i} className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center hover:bg-navy hover:text-white transition-all text-navy/30">
-                    <Icon className="w-4 h-4" />
-                  </button>
-                ))}
+                <a href="https://www.facebook.com/share/g/1DrFKJJ4DA/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center hover:bg-navy hover:text-white transition-all text-navy/40">
+                  <Facebook className="w-5 h-5" />
+                </a>
               </div>
               <div className="pt-4">
                 <p className="text-[9px] font-bold text-grey/40 uppercase tracking-[0.3em] mb-3">Contact</p>
