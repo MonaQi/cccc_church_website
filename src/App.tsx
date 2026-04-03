@@ -310,7 +310,7 @@ export default function App() {
             <Logo
               src={lang === 'en' ? englishLogo : chineseLogo}
               alt="CCCC Logo"
-              className="w-50 h-50 transition-transform group-hover:scale-105"
+              className="w-16 h-16 md:w-20 md:h-20 transition-transform group-hover:scale-105"
             />
             <div className="hidden md:block">
               <h1 className="text-xs font-bold text-navy leading-tight uppercase tracking-[0.2em]">CCCC</h1>
