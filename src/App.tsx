@@ -110,7 +110,7 @@ const translations: Record<Language, Translation> = {
       activities: 'Activities',
       gallery: 'Gallery',
       contact: 'Contact',
-      newsletter: 'Newsletter',
+      newsletter: 'News / Notifications',
     },
     hero: {
       title: 'Christchurch Catholic Chinese Community',
@@ -122,7 +122,7 @@ const translations: Record<Language, Translation> = {
     mass: {
       title: 'Chinese Mass Time',
       time: 'First Sunday of every month, 2:30 PM',
-      location: 'St Bernadette’s Catholic Church',
+      location: 'Holy Family Parish - St. Teresa of Lisieux Church',
       viewMap: 'View Map',
       posterTitle: 'Announcements',
       posterPlaceholder: 'Upcoming event posters will be displayed here.',
@@ -185,8 +185,8 @@ Hope to live out Christ more in life?
       languages: 'Language Support: Mandarin, Cantonese, English',
     },
     newsletter: {
-      title: 'Father’s Talk / Newsletter',
-      placeholder: 'Father Su’s reflections and community updates will be shared here.',
+      title: 'News / Notifications',
+      placeholder: 'Community news and important notifications will be shared here.',
     },
     footer: {
       rights: 'All Rights Reserved.',
@@ -200,7 +200,7 @@ Hope to live out Christ more in life?
       activities: '团体活动',
       gallery: '相册',
       contact: '联系我们',
-      newsletter: '神父寄语',
+      newsletter: '消息 / 通知',
     },
     hero: {
       title: '基督城华人天主教团体',
@@ -212,7 +212,7 @@ Hope to live out Christ more in life?
     mass: {
       title: '华语弥撒时间',
       time: '每月第一个主日，下午 2:30',
-      location: 'St Bernadette’s Catholic Church',
+      location: 'Holy Family Parish - St. Teresa of Lisieux Church',
       viewMap: '查看地图',
       posterTitle: '活动公告',
       posterPlaceholder: '未来的活动海报将在此展示。',
@@ -275,8 +275,8 @@ Hope to live out Christ more in life?
       languages: '语言支持：普通话、粤语、英语',
     },
     newsletter: {
-      title: '神父寄语 / 通讯',
-      placeholder: '苏神父的反思和社区更新将在此分享。',
+      title: '消息 / 通知',
+      placeholder: '团体消息和重要通知将在此分享。',
     },
     footer: {
       rights: '版权所有。',
@@ -311,6 +311,122 @@ const SectionTitle = ({ children, subtitle }: { children: React.ReactNode, subti
     <div className="w-12 h-[1px] bg-beige mx-auto" />
   </div>
 );
+
+// --- News Data ---
+type NewsTag = 'Important' | 'Event' | 'News';
+interface NewsItem {
+  id: string;
+  tag: NewsTag;
+  tagZh: string;
+  titleEn: string;
+  titleZh: string;
+  date: string;
+  contentEn: string;
+  contentZh: string;
+}
+
+const newsItems: NewsItem[] = [
+  {
+    id: 'venue-change-may2026',
+    tag: 'Important',
+    tagZh: '重要',
+    titleEn: 'Chinese Mass Venue Change',
+    titleZh: '中文彌撒場地更換',
+    date: '3 May 2026',
+    contentEn: `Dear brothers and sisters in Christ,
+
+From May onwards, our Chinese Mass will be moved to St Teresa's Catholic Church, located at 1/8 Puriri Street, Riccarton.
+
+The Mass will start at 4:00 PM on 3rd May.
+The Rosary will be recited at 3:30 PM, and there will be a tea gathering after the Mass.
+
+All parishioners are welcome to bring their family and friends to join us.
+
+Regards,
+Christchurch Catholic Chinese Community`,
+    contentZh: ` 各位主内兄弟姊妹，
+从五月份开始，我们的中文弥撒将会移师到 St Teresa's Catholic Church 举行。
+地址：1/8 Puriri Street, Riccarton。
+五月三日下午四时弥撒开始。
+下午三时三十分将会恭念玫瑰经，弥撒后有茶聚。
+欢迎各教友带同亲友参加。`,
+  },
+];
+
+const tagColors: Record<NewsTag, string> = {
+  Important: 'bg-burgundy/10 text-burgundy',
+  Event: 'bg-navy/10 text-navy',
+  News: 'bg-beige/60 text-navy/70',
+};
+
+const NewsAccordion = ({ items, lang }: { items: NewsItem[]; lang: 'en' | 'zh' }) => {
+  const [openId, setOpenId] = React.useState<string | null>(null);
+  const sorted = [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  return (
+    <div className="space-y-4">
+      {sorted.map((item) => {
+        const isOpen = openId === item.id;
+        const tag = lang === 'en' ? item.tag : item.tagZh;
+        const title = lang === 'en' ? item.titleEn : item.titleZh;
+        const content = lang === 'en' ? item.contentEn : item.contentZh;
+
+        return (
+          <motion.div
+            key={item.id}
+            layout
+            className={`rounded-3xl border overflow-hidden transition-all duration-300 ${isOpen ? 'border-navy/20 shadow-xl' : 'border-light-stone shadow-sm hover:shadow-md hover:border-navy/10'
+              } bg-white`}
+          >
+            {/* Header */}
+            <button
+              onClick={() => setOpenId(isOpen ? null : item.id)}
+              className="w-full flex items-center justify-between gap-4 p-6 md:p-8 text-left"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1 min-w-0">
+                <span className={`text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shrink-0 ${tagColors[item.tag]}`}>
+                  {tag}
+                </span>
+                <span className="font-bold text-navy text-sm md:text-base leading-snug">{title}</span>
+              </div>
+              <div className="flex items-center gap-4 shrink-0">
+                <span className="text-[10px] text-grey/60 font-light hidden sm:block">{item.date}</span>
+                <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
+                  <ChevronRight className="w-4 h-4 text-navy/40" />
+                </motion.div>
+              </div>
+            </button>
+
+            {/* Date on mobile */}
+            {!isOpen && (
+              <p className="text-[10px] text-grey/50 font-light px-6 pb-4 -mt-3 sm:hidden">{item.date}</p>
+            )}
+
+            {/* Content */}
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  key="content"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                >
+                  <div className="px-6 md:px-8 pb-8 border-t border-light-stone/60">
+                    <p className="text-[10px] text-grey/50 font-light mt-5 mb-4">{item.date}</p>
+                    <p className="text-navy/70 text-sm leading-loose whitespace-pre-line font-light">
+                      {content}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+};
 
 const PosterCarousel = ({ images }: { images: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -351,16 +467,15 @@ const PosterCarousel = ({ images }: { images: string[] }) => {
           </>
         )}
       </div>
-      
+
       {/* Dots */}
       <div className="flex gap-2 mt-6 justify-center">
         {images.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}
-            className={`w-2 h-2 rounded-full transition-all ${
-              currentIndex === i ? 'bg-champagne w-8' : 'bg-white/20 hover:bg-white/40'
-            }`}
+            className={`w-2 h-2 rounded-full transition-all ${currentIndex === i ? 'bg-champagne w-8' : 'bg-white/20 hover:bg-white/40'
+              }`}
           />
         ))}
       </div>
@@ -382,7 +497,7 @@ export default function App() {
     {
       id: 'library',
       name: lang === 'en' ? 'Community Library' : '网页数字图书馆',
-      desc: lang === 'en' 
+      desc: lang === 'en'
         ? 'We are setting up the Christchurch Catholic Chinese Community Library. We welcome donations of Chinese Catholic books to enrich our resources.'
         : '我们正在建立基督城天主教华人团体图书馆，欢迎大家踊跃捐赠中文天主教图书、学习手册及刊物，丰富图书资源，也方便日后借阅。',
       icon: BookOpen,
@@ -451,7 +566,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 cursor-pointer group" onClick={() => scrollTo('home')}>
 
-            <img src={lang === 'en' ? englishLogo : chineseLogo} alt="Logo" className="h-12 sm:h-24 md:h-32 lg:h-36 drop-shadow-sm transition-transform hover:scale-105" />
+            <img src={lang === 'en' ? englishLogo : chineseLogo} alt="Logo" className="h-12 sm:h-16 md:h-20 lg:h-24 drop-shadow-sm transition-transform hover:scale-105" />
             <div className="hidden md:block">
               <h1 className="text-xs font-bold text-navy leading-tight uppercase tracking-[0.2em]">CCCC</h1>
               <p className="text-[9px] text-grey font-medium uppercase tracking-wider">Christchurch Catholic Chinese Community</p>
@@ -480,13 +595,13 @@ export default function App() {
 
           {/* Mobile Menu Toggle */}
           <div className="lg:hidden flex items-center gap-3">
-            <button 
-              onClick={toggleLang} 
+            <button
+              onClick={toggleLang}
               className="w-9 h-9 rounded-full border border-light-stone hover:bg-soft-white transition-colors flex items-center justify-center shadow-sm bg-white"
             >
-               <span className="text-[10px] font-bold text-burgundy tracking-widest pl-0.5">
-                 {lang === 'en' ? '中' : 'EN'}
-               </span>
+              <span className="text-[10px] font-bold text-burgundy tracking-widest pl-0.5">
+                {lang === 'en' ? '中' : 'EN'}
+              </span>
             </button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="w-9 h-9 flex items-center justify-center text-navy border border-light-stone rounded-full shadow-sm bg-white hover:bg-soft-white transition-colors">
               {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -528,327 +643,317 @@ export default function App() {
       {currentPage === 'home' ? (
         <main>
           {/* --- Hero Section --- */}
-      <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-soft-white">
-        <div className="absolute inset-0 z-0">
-          <img
-            src={profileImg}
-            alt="Christchurch Catholic Chinese Community"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-soft-white/20 via-transparent to-white" />
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="relative z-10 text-center px-8 max-w-5xl pt-24 md:pt-0"
-        >
-
-          <h1 className="text-4xl md:text-7xl font-serif text-navy mb-6 leading-[1.1] tracking-tight">
-            {t.hero.title}
-          </h1>
-          <h2 className="text-lg md:text-xl font-serif text-grey mb-12 font-light italic tracking-[0.1em]">
-            {t.hero.subtitle}
-          </h2>
-          <div className="w-12 h-[1px] bg-beige mx-auto mb-12" />
-          <p className="text-base md:text-lg text-navy/70 mb-16 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-            {t.hero.welcome}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
-            <button
-              onClick={() => scrollTo('mass')}
-              className="w-full sm:w-auto px-12 py-5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-navy/90 transition-all shadow-sm flex items-center justify-center gap-3"
-            >
-              <Clock className="w-3 h-3" />
-              {t.hero.ctaMass}
-            </button>
-            <button
-              onClick={() => scrollTo('contact')}
-              className="w-full sm:w-auto px-12 py-5 bg-transparent text-navy border border-navy/10 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-light-stone transition-all flex items-center justify-center gap-3"
-            >
-              <Mail className="w-3 h-3" />
-              {t.hero.ctaContact}
-            </button>
-          </div>
-        </motion.div>
-
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-30">
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <ChevronRight className="w-5 h-5 text-navy rotate-90" />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* --- Sunday Mass Section --- */}
-      <section id="mass" className="py-32 px-8 max-w-3xl mx-auto">
-        <SectionTitle subtitle="Worship">{t.mass.title}</SectionTitle>
-
-        <div 
-          onClick={() => setIsPosterOpen(true)}
-          className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50 mt-16 text-center group transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-transparent cursor-pointer relative overflow-hidden"
-        >
-          {/* Subtle background glow on hover */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-navy/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          
-          <div className="relative z-10">
-            <h3 className="text-sm font-bold text-navy mb-4 uppercase tracking-[0.2em]">{lang === 'en' ? 'Mass Schedule' : '弥撒安排'}</h3>
-            <p className="text-xl md:text-2xl text-navy font-serif leading-snug mb-12">{t.mass.time}</p>
-
-            <div className="w-16 h-[1px] bg-light-stone mx-auto mb-12 group-hover:bg-navy/20 transition-colors" />
-
-            <h3 className="text-sm font-bold text-navy mb-4 uppercase tracking-[0.2em]">{lang === 'en' ? 'Location' : '地点'}</h3>
-            <p className="text-xl md:text-2xl text-navy font-serif leading-snug mb-4">{t.mass.location}</p>
-            <p className="text-sm text-grey font-light leading-relaxed mb-12 max-w-sm mx-auto">
-              76 Main South Road, Upper Riccarton, Christchurch
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8" onClick={(e) => e.stopPropagation()}>
-               <button 
-                 onClick={() => setIsPosterOpen(true)}
-                 className="w-full sm:w-auto inline-flex justify-center items-center gap-3 px-8 py-4 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md"
-               >
-                 {lang === 'en' ? 'Poster' : '海报'} <ImageIcon className="w-3 h-3" />
-               </button>
-               <a
-                 href="https://maps.google.com/?q=St+Bernadette’s+Catholic+Church+Christchurch"
-                 target="_blank"
-                 rel="noopener noreferrer"
-                 className="w-full sm:w-auto inline-flex justify-center items-center gap-3 px-8 py-4 bg-white border border-light-stone rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-navy hover:bg-soft-white transition-all shadow-sm"
-               >
-                 {t.mass.viewMap} <ChevronRight className="w-3 h-3" />
-               </a>
+          <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-soft-white pt-32 md:pt-40 lg:pt-48 pb-12">
+            <div className="absolute inset-0 z-0">
+              <img
+                src={profileImg}
+                alt="Christchurch Catholic Chinese Community"
+                className="w-full h-full object-cover opacity-20"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-soft-white/20 via-transparent to-white" />
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Mass Schedule Poster Modal */}
-      <AnimatePresence>
-        {isPosterOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsPosterOpen(false)}
-            className="fixed inset-0 z-[200] bg-navy/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
-          >
-            <button 
-              onClick={() => setIsPosterOpen(false)}
-              className="absolute top-6 right-6 md:top-10 md:right-10 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="relative z-10 text-center px-8 max-w-5xl"
             >
-              <X className="w-6 h-6" />
-            </button>
-            <motion.img 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-              src={massScheduleImg} 
-              alt="Mass Schedule Poster" 
-              className="max-w-full max-h-full rounded-[2rem] shadow-2xl object-contain bg-white"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* --- About Us Section --- */}
-      <section id="about" className="py-32 bg-soft-white">
-        <div className="max-w-7xl mx-auto px-8">
-          <SectionTitle subtitle="Our Journey">{t.about.title}</SectionTitle>
+              <h1 className="text-4xl md:text-7xl font-serif text-navy mb-6 leading-[1.1] tracking-tight">
+                {t.hero.title}
+              </h1>
+              <h2 className="text-lg md:text-xl font-serif text-grey mb-12 font-light italic tracking-[0.1em]">
+                {t.hero.subtitle}
+              </h2>
+              <div className="w-12 h-[1px] bg-beige mx-auto mb-12" />
+              <p className="text-base md:text-lg text-navy/70 mb-16 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                {t.hero.welcome}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+                <button
+                  onClick={() => scrollTo('mass')}
+                  className="w-full sm:w-auto px-12 py-5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-navy/90 transition-all shadow-sm flex items-center justify-center gap-3"
+                >
+                  <Clock className="w-3 h-3" />
+                  {t.hero.ctaMass}
+                </button>
+                <button
+                  onClick={() => scrollTo('contact')}
+                  className="w-full sm:w-auto px-12 py-5 bg-transparent text-navy border border-navy/10 rounded-full text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-light-stone transition-all flex items-center justify-center gap-3"
+                >
+                  <Mail className="w-3 h-3" />
+                  {t.hero.ctaContact}
+                </button>
+              </div>
+            </motion.div>
 
-          <div className="max-w-4xl mx-auto space-y-12 text-xs md:text-sm text-grey leading-relaxed font-light">
-            <p className="text-navy font-serif text-lg md:text-xl italic leading-relaxed text-center">
-              {t.about.overview}
-            </p>
-            <div className="space-y-8 pt-10 border-t border-light-stone">
-              <p>{t.about.journey}</p>
-              <p>{t.about.pastoral}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- Activities Section --- */}
-      <section id="activities" className="py-32 px-8 max-w-7xl mx-auto">
-        <SectionTitle subtitle="Growing Together">{t.activities.title}</SectionTitle>
-
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start mt-16">
-          
-          {/* Left Column: Tab List */}
-          <div className="lg:col-span-4 flex flex-col gap-3">
-             {activitiesList.map((activity) => {
-               const isActive = activeTabId === activity.id;
-               return (
-                 <button
-                   key={activity.id}
-                   onClick={() => setActiveTabId(activity.id)}
-                   className={`flex items-center gap-5 p-5 rounded-3xl transition-all duration-300 text-left border ${isActive ? 'bg-navy text-white border-navy shadow-lg scale-[1.02]' : 'bg-transparent text-navy hover:bg-white border-transparent hover:border-light-stone hover:shadow-sm'}`}
-                 >
-                   <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all shadow-sm ${isActive ? 'bg-white/20' : 'bg-soft-white border border-light-stone'}`}>
-                     <activity.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-burgundy'}`} />
-                   </div>
-                   <span className="font-bold text-xs uppercase tracking-[0.1em] leading-snug">{activity.name}</span>
-                 </button>
-               );
-             })}
-          </div>
-
-          {/* Right Column: Content Display */}
-          <div className="lg:col-span-8">
-            <AnimatePresence mode="wait">
+            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-30">
               <motion.div
-                key={activeActivity.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white p-10 md:p-14 lg:p-16 rounded-[3rem] md:rounded-[4rem] border border-light-stone shadow-xl relative overflow-hidden min-h-[500px] flex flex-col"
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
               >
-                <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-soft-white rounded-bl-[400px] -z-0 opacity-50" />
-                
-                <div className="relative z-10 flex-grow">
-                  <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12">
-                    <div className="w-16 h-16 bg-navy text-white rounded-3xl flex items-center justify-center shadow-lg transform -rotate-3 shrink-0">
-                      <activeActivity.icon className="w-8 h-8" />
+                <ChevronRight className="w-5 h-5 text-navy rotate-90" />
+              </motion.div>
+            </div>
+          </section>
+
+          {/* --- Sunday Mass Section --- */}
+          <section id="mass" className="py-32 px-8 max-w-3xl mx-auto">
+            <SectionTitle subtitle="Worship">{t.mass.title}</SectionTitle>
+
+            <div
+              onClick={() => setIsPosterOpen(true)}
+              className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50 mt-16 text-center group transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-transparent cursor-pointer relative overflow-hidden"
+            >
+              {/* Subtle background glow on hover */}
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-navy/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+              <div className="relative z-10">
+                <h3 className="text-sm font-bold text-navy mb-4 uppercase tracking-[0.2em]">{lang === 'en' ? 'Mass Schedule' : '弥撒安排'}</h3>
+                <p className="text-xl md:text-2xl text-navy font-serif leading-snug mb-12">{t.mass.time}</p>
+
+                <div className="w-16 h-[1px] bg-light-stone mx-auto mb-12 group-hover:bg-navy/20 transition-colors" />
+
+                <h3 className="text-sm font-bold text-navy mb-4 uppercase tracking-[0.2em]">{lang === 'en' ? 'Location' : '地点'}</h3>
+                <p className="text-xl md:text-2xl text-navy font-serif leading-snug mb-4">{t.mass.location}</p>
+                <p className="text-sm text-grey font-light leading-relaxed mb-12 max-w-sm mx-auto">
+                  8 Puriri Street, Riccarton, Christchurch
+                </p>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={() => setIsPosterOpen(true)}
+                    className="w-full sm:w-auto inline-flex justify-center items-center gap-3 px-8 py-4 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md"
+                  >
+                    {lang === 'en' ? 'Details' : '详情信息'} <ImageIcon className="w-3 h-3" />
+                  </button>
+                  <a
+                    href="https://maps.google.com/?q=Holy+Family+Parish+St+Teresa+of+Lisieux+Church,+8+Puriri+Street,+Riccarton,+Christchurch"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto inline-flex justify-center items-center gap-3 px-8 py-4 bg-white border border-light-stone rounded-full text-[10px] font-bold uppercase tracking-[0.2em] text-navy hover:bg-soft-white transition-all shadow-sm"
+                  >
+                    {t.mass.viewMap} <ChevronRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Mass Schedule Poster Modal */}
+          <AnimatePresence>
+            {isPosterOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsPosterOpen(false)}
+                className="fixed inset-0 z-[200] bg-navy/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+              >
+                <button
+                  onClick={() => setIsPosterOpen(false)}
+                  className="absolute top-6 right-6 md:top-10 md:right-10 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+                <motion.img
+                  initial={{ scale: 0.9, y: 20 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.9, y: 20 }}
+                  transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+                  src={massScheduleImg}
+                  alt="Mass Schedule Poster"
+                  className="max-w-full max-h-full rounded-[2rem] shadow-2xl object-contain bg-white"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* --- About Us Section --- */}
+          <section id="about" className="py-32 bg-soft-white">
+            <div className="max-w-7xl mx-auto px-8">
+              <SectionTitle subtitle="Our Journey">{t.about.title}</SectionTitle>
+
+              <div className="max-w-4xl mx-auto space-y-12 text-xs md:text-sm text-grey leading-relaxed font-light">
+                <p className="text-navy font-serif text-lg md:text-xl italic leading-relaxed text-center">
+                  {t.about.overview}
+                </p>
+                <div className="space-y-8 pt-10 border-t border-light-stone">
+                  <p>{t.about.journey}</p>
+                  <p>{t.about.pastoral}</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* --- Activities Section --- */}
+          <section id="activities" className="py-32 px-8 max-w-7xl mx-auto">
+            <SectionTitle subtitle="Growing Together">{t.activities.title}</SectionTitle>
+
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start mt-16">
+
+              {/* Left Column: Tab List */}
+              <div className="lg:col-span-4 flex flex-col gap-3">
+                {activitiesList.map((activity) => {
+                  const isActive = activeTabId === activity.id;
+                  return (
+                    <button
+                      key={activity.id}
+                      onClick={() => setActiveTabId(activity.id)}
+                      className={`flex items-center gap-5 p-5 rounded-3xl transition-all duration-300 text-left border ${isActive ? 'bg-navy text-white border-navy shadow-lg scale-[1.02]' : 'bg-transparent text-navy hover:bg-white border-transparent hover:border-light-stone hover:shadow-sm'}`}
+                    >
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 transition-all shadow-sm ${isActive ? 'bg-white/20' : 'bg-soft-white border border-light-stone'}`}>
+                        <activity.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-burgundy'}`} />
+                      </div>
+                      <span className="font-bold text-xs uppercase tracking-[0.1em] leading-snug">{activity.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right Column: Content Display */}
+              <div className="lg:col-span-8">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeActivity.id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white p-10 md:p-14 lg:p-16 rounded-[3rem] md:rounded-[4rem] border border-light-stone shadow-xl relative overflow-hidden min-h-[500px] flex flex-col"
+                  >
+                    <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-soft-white rounded-bl-[400px] -z-0 opacity-50" />
+
+                    <div className="relative z-10 flex-grow">
+                      <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-12">
+                        <div className="w-16 h-16 bg-navy text-white rounded-3xl flex items-center justify-center shadow-lg transform -rotate-3 shrink-0">
+                          <activeActivity.icon className="w-8 h-8" />
+                        </div>
+                        <div>
+                          <h3 className="text-2xl md:text-3xl font-serif text-navy leading-tight">{activeActivity.name}</h3>
+                          {activeActivity.isYouth && activeActivity.status && (
+                            <span className="inline-block px-4 py-1.5 bg-burgundy/10 text-burgundy text-[9px] font-bold rounded-full uppercase tracking-[0.2em] mt-4">
+                              {activeActivity.status}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="w-16 h-[2px] bg-light-stone mb-12" />
+
+                      <div className="text-navy/70 leading-loose font-light md:text-lg whitespace-pre-wrap max-w-2xl text-justify">
+                        {activeActivity.desc}
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-2xl md:text-3xl font-serif text-navy leading-tight">{activeActivity.name}</h3>
-                      {activeActivity.isYouth && activeActivity.status && (
-                        <span className="inline-block px-4 py-1.5 bg-burgundy/10 text-burgundy text-[9px] font-bold rounded-full uppercase tracking-[0.2em] mt-4">
-                          {activeActivity.status}
-                        </span>
+
+                    <div className="relative z-10 mt-16 pt-8 border-t border-light-stone/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                      <p className="text-sm text-grey font-serif italic max-w-[200px] md:max-w-xs leading-relaxed">
+                        {activeActivity.id === 'library'
+                          ? (lang === 'en' ? 'Explore our digital collection' : '随时随地借阅我们的海量图书')
+                          : (lang === 'en' ? 'We welcome everyone to grow together in faith' : '我们热烈欢迎大家一起在爱与信仰中成长')
+                        }
+                      </p>
+                      {activeActivity.id === 'library' ? (
+                        <button
+                          onClick={activeActivity.action}
+                          className="px-10 py-5 bg-burgundy text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-navy transition-all hover:-translate-y-1 flex items-center justify-center gap-3 w-full sm:w-auto"
+                        >
+                          {activeActivity.actionText} <ChevronRight className="w-4 h-4" />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => scrollTo('contact')}
+                          className="px-10 py-5 bg-navy text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-burgundy transition-all hover:-translate-y-1 flex items-center justify-center gap-3 w-full sm:w-auto"
+                        >
+                          {activeActivity.actionText} <ChevronRight className="w-4 h-4" />
+                        </button>
                       )}
                     </div>
-                  </div>
-
-                  <div className="w-16 h-[2px] bg-light-stone mb-12" />
-
-                  <div className="text-navy/70 leading-loose font-light md:text-lg whitespace-pre-wrap max-w-2xl text-justify">
-                    {activeActivity.desc}
-                  </div>
-                </div>
-
-                <div className="relative z-10 mt-16 pt-8 border-t border-light-stone/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-                   <p className="text-sm text-grey font-serif italic max-w-[200px] md:max-w-xs leading-relaxed">
-                     {activeActivity.id === 'library' 
-                       ? (lang === 'en' ? 'Explore our digital collection' : '随时随地借阅我们的海量图书')
-                       : (lang === 'en' ? 'We welcome everyone to grow together in faith' : '我们热烈欢迎大家一起在爱与信仰中成长')
-                     }
-                   </p>
-                   {activeActivity.id === 'library' ? (
-                     <button
-                       onClick={activeActivity.action}
-                       className="px-10 py-5 bg-burgundy text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-navy transition-all hover:-translate-y-1 flex items-center justify-center gap-3 w-full sm:w-auto"
-                     >
-                       {activeActivity.actionText} <ChevronRight className="w-4 h-4" />
-                     </button>
-                   ) : (
-                     <button
-                       onClick={() => scrollTo('contact')}
-                       className="px-10 py-5 bg-navy text-white rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-burgundy transition-all hover:-translate-y-1 flex items-center justify-center gap-3 w-full sm:w-auto"
-                     >
-                       {activeActivity.actionText} <ChevronRight className="w-4 h-4" />
-                     </button>
-                   )}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          
-        </div>
-      </section>
-
-      {/* --- Gallery Section --- */}
-      <section id="gallery" className="py-32 bg-soft-white px-8">
-        <div className="max-w-5xl mx-auto text-center">
-          <SectionTitle subtitle="Moments">{t.gallery.title}</SectionTitle>
-          <div 
-             onClick={() => {
-                setCurrentPage('gallery');
-                window.scrollTo(0, 0);
-             }}
-             className="bg-white rounded-[3rem] p-12 md:p-24 shadow-sm border border-light-stone cursor-pointer group hover:shadow-2xl hover:border-transparent transition-all relative overflow-hidden"
-          >
-             <div 
-               className="absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-30 transition-opacity duration-1000" 
-               style={{ backgroundImage: `url(${profileImg})` }} 
-             />
-             <ImageIcon className="w-12 h-12 text-navy/20 mx-auto mb-8 group-hover:text-burgundy transition-colors duration-500 group-hover:scale-110" />
-             <h3 className="text-2xl md:text-3xl font-serif text-navy mb-6">
-                {lang === 'en' ? 'Explore our moments' : '探索我们的精彩瞬间'}
-             </h3>
-             <p className="text-grey font-light max-w-xl mx-auto mb-12 relative z-10 leading-relaxed text-sm md:text-base">
-                {lang === 'en' 
-                  ? 'A visual journey through the life of the Christchurch Catholic Chinese Community. Click to enter our independent gallery and flip through our exclusive curated memories.'
-                  : '图说基督城华人天主教团体的生活点滴。点击此处进入全屏独立画廊，翻阅属于我们的独家回忆。'}
-             </p>
-             <button className="relative z-10 px-8 py-4 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-md group-hover:bg-burgundy transition-colors">
-                {lang === 'en' ? 'Open Gallery' : '打开相册图集'}
-             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* --- Newsletter Section --- */}
-      <section id="newsletter" className="py-32 px-8 max-w-4xl mx-auto text-center">
-        <SectionTitle subtitle="Reflections">{t.newsletter.title}</SectionTitle>
-        <div className="bg-white p-16 md:p-24 rounded-[4rem] border border-light-stone shadow-sm">
-          <MessageSquare className="w-10 h-10 text-beige mx-auto mb-10" />
-          <p className="text-xl md:text-2xl text-navy/50 italic font-serif leading-relaxed">
-            {t.newsletter.placeholder}
-          </p>
-          <div className="mt-16 flex justify-center gap-6">
-            <div className="w-1.5 h-1.5 rounded-full bg-light-stone" />
-            <div className="w-1.5 h-1.5 rounded-full bg-burgundy/20" />
-            <div className="w-1.5 h-1.5 rounded-full bg-light-stone" />
-          </div>
-        </div>
-      </section>
-
-      {/* --- Contact Section --- */}
-      <section id="contact" className="py-32 bg-light-stone/30">
-        <div className="max-w-4xl mx-auto px-8">
-          <SectionTitle subtitle="Get in Touch">{t.contact.title}</SectionTitle>
-
-          <div className="text-center mb-16">
-             <p className="text-lg md:text-xl text-grey leading-relaxed font-light">
-               {t.contact.welcome}
-             </p>
-          </div>
-
-          <div className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50">
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="flex gap-6">
-                <div className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center shadow-sm shrink-0">
-                  <Users className="w-5 h-5 text-navy/40" />
-                </div>
-                <div>
-                  <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Contact Person</p>
-                  <p className="font-bold text-navy tracking-wide text-sm">Angeline Wong</p>
-                  <p className="text-grey text-xs mt-1">021 191 8001</p>
-                </div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
-
-              <div className="flex gap-6">
-                <div className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center shadow-sm shrink-0">
-                  <Globe className="w-5 h-5 text-burgundy/40" />
-                </div>
-                <div>
-                  <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Languages</p>
-                  <p className="text-navy font-bold text-sm tracking-wide">Mandarin, Cantonese, English</p>
-                </div>
-              </div>
-
 
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+
+          {/* --- Gallery Section --- */}
+          <section id="gallery" className="py-32 bg-soft-white px-8">
+            <div className="max-w-5xl mx-auto text-center">
+              <SectionTitle subtitle="Moments">{t.gallery.title}</SectionTitle>
+              <div
+                onClick={() => {
+                  setCurrentPage('gallery');
+                  window.scrollTo(0, 0);
+                }}
+                className="bg-white rounded-[3rem] p-12 md:p-24 shadow-sm border border-light-stone cursor-pointer group hover:shadow-2xl hover:border-transparent transition-all relative overflow-hidden"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center opacity-10 group-hover:opacity-30 transition-opacity duration-1000"
+                  style={{ backgroundImage: `url(${profileImg})` }}
+                />
+                <ImageIcon className="w-12 h-12 text-navy/20 mx-auto mb-8 group-hover:text-burgundy transition-colors duration-500 group-hover:scale-110" />
+                <h3 className="text-2xl md:text-3xl font-serif text-navy mb-6">
+                  {lang === 'en' ? 'Explore our moments' : '探索我们的精彩瞬间'}
+                </h3>
+                <p className="text-grey font-light max-w-xl mx-auto mb-12 relative z-10 leading-relaxed text-sm md:text-base">
+                  {lang === 'en'
+                    ? 'A visual journey through the life of the Christchurch Catholic Chinese Community. Click to enter our independent gallery and flip through our exclusive curated memories.'
+                    : '图说基督城华人天主教团体的生活点滴。点击此处进入全屏独立画廊，翻阅属于我们的独家回忆。'}
+                </p>
+                <button className="relative z-10 px-8 py-4 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] shadow-md group-hover:bg-burgundy transition-colors">
+                  {lang === 'en' ? 'Open Gallery' : '打开相册图集'}
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* --- News / Notifications Section --- */}
+          <section id="newsletter" className="py-32 px-8 max-w-3xl mx-auto">
+            <SectionTitle subtitle={lang === 'en' ? 'Announcements' : '公告'}>{t.newsletter.title}</SectionTitle>
+            <NewsAccordion items={newsItems} lang={lang} />
+          </section>
+
+          {/* --- Contact Section --- */}
+          <section id="contact" className="py-32 bg-light-stone/30">
+            <div className="max-w-4xl mx-auto px-8">
+              <SectionTitle subtitle="Get in Touch">{t.contact.title}</SectionTitle>
+
+              <div className="text-center mb-16">
+                <p className="text-lg md:text-xl text-grey leading-relaxed font-light">
+                  {t.contact.welcome}
+                </p>
+              </div>
+
+              <div className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50">
+                <div className="grid md:grid-cols-2 gap-12">
+                  <div className="flex gap-6">
+                    <div className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center shadow-sm shrink-0">
+                      <Users className="w-5 h-5 text-navy/40" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Contact Person</p>
+                      <p className="font-bold text-navy tracking-wide text-sm">Angeline Wong</p>
+                      <p className="text-grey text-xs mt-1">021 191 8001</p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-6">
+                    <div className="w-12 h-12 bg-soft-white border border-light-stone rounded-full flex items-center justify-center shadow-sm shrink-0">
+                      <Globe className="w-5 h-5 text-burgundy/40" />
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Languages</p>
+                      <p className="text-navy font-bold text-sm tracking-wide">Mandarin, Cantonese, English</p>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </section>
 
         </main>
       ) : currentPage === 'library' ? (
@@ -881,7 +986,7 @@ export default function App() {
               </div>
               <p className="text-grey text-xs leading-relaxed font-light tracking-wide">
                 基督城华人天主教团体<br />
-                St Bernadette’s Catholic Church<br />
+                Holy Family Parish - St. Teresa of Lisieux Church<br />
                 Christchurch, New Zealand
               </p>
             </div>
