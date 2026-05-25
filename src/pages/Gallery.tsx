@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, X, Image as ImageIcon } from 'lucide-react';
+import React from 'react';
+import { motion } from 'motion/react';
+import { ArrowLeft, Image as ImageIcon } from 'lucide-react';
 
 // Automatically import all images from the album folder
 const photoModules = import.meta.glob('../assets/album/*.{jpg,JPG,jpeg,JPEG,png,PNG}', { eager: true, query: '?url', import: 'default' });
@@ -13,7 +13,6 @@ const photos = Object.entries(photoModules).map(([path, url], index) => {
 });
 
 export default function Gallery({ onBack, lang }: { onBack: () => void, lang: 'en' | 'zh' }) {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
     <main className="min-h-screen bg-soft-white font-sans selection:bg-navy selection:text-white">
@@ -47,8 +46,7 @@ export default function Gallery({ onBack, lang }: { onBack: () => void, lang: 'e
               <motion.div 
                 key={photo.id}
                 whileHover={{ y: -5 }}
-                className="break-inside-avoid rounded-[2.5rem] overflow-hidden cursor-zoom-in relative group shadow-sm hover:shadow-xl transition-all border border-light-stone"
-                onClick={() => setSelectedImage(photo.url)}
+                className="break-inside-avoid rounded-[2.5rem] overflow-hidden relative group shadow-sm hover:shadow-xl transition-all border border-light-stone"
               >
                 <img 
                   src={photo.url} 
@@ -67,36 +65,6 @@ export default function Gallery({ onBack, lang }: { onBack: () => void, lang: 'e
           </div>
         )}
       </div>
-
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-[200] bg-navy/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
-          >
-            <button 
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-6 right-6 md:top-10 md:right-10 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors backdrop-blur-md"
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <motion.img 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-              src={selectedImage} 
-              alt="Expanded view" 
-              className="max-w-full max-h-full rounded-[2rem] shadow-2xl object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
       </div>
     </main>
   );
