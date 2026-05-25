@@ -121,7 +121,7 @@ const translations: Record<Language, Translation> = {
     },
     mass: {
       title: 'Chinese Mass Time',
-      time: 'First Sunday of every month, 2:30 PM',
+      time: 'First Sunday of every month, 3:30 PM',
       location: 'Holy Family Parish - St. Teresa of Lisieux Church',
       viewMap: 'View Map',
       posterTitle: 'Announcements',
@@ -131,9 +131,9 @@ const translations: Record<Language, Translation> = {
       title: 'About Us',
       overview: 'Christchurch Catholic Chinese Community (CCCC) belongs to the Roman Catholic Diocese of Christchurch and supports the Diocese in its pastoral mission among Chinese Catholics. The community mainly serves Chinese-speaking Catholics from Mainland China, Taiwan, Hong Kong, Macau, Singapore, Malaysia, Indonesia, and other places, providing faith formation, spiritual activities, and a platform for cultural exchange rooted in Chinese tradition.',
       journey: 'In 2014, Fr Clement Covacho noticed that many Chinese Catholic immigrants experienced language difficulties when attending English Masses. To respond to their pastoral needs, he sought permission from the then Bishop of Christchurch, Barry Jones, to celebrate a Chinese Christmas Mass. Through the efforts of Fr Clement and the support of parishioners, the community gradually took shape.',
-      pastoral: 'At present, the community celebrates one Chinese Mass each month and organizes various faith formation activities, including the Chinese Alpha Course, Bible sharing, catechetical teaching, and the Legion of Mary.',
+      pastoral: 'At present, the community celebrates one Chinese Mass each month at St. Teresa of Lisieux Church and organizes various faith formation activities, including the Chinese Alpha Course, Bible sharing, catechetical teaching, and the Legion of Mary.',
       contactPerson: 'Contact Person: Angeline Wong (0211918001)',
-      welcomeMsg: 'We warmly welcome all Chinese Catholics and anyone interested in the Catholic faith to join us in prayer, fellowship, and spiritual growth.',
+      welcomeMsg: 'We warmly welcome all Chinese Catholics and anyone interested in the Catholic faith to join us in prayer, fellowship, and spiritual growth in Christchurch.',
     },
     activities: {
       title: 'Activities & Events',
@@ -165,7 +165,7 @@ Hope to live out Christ more in life?
 
 📖 Welcome to join the Youcat group meeting
 📅 Once a month | Fourth Sunday afternoon
-⏰ 1:30 – 3:30 PM`
+⏰ 3:30 PM`
       },
       legion: { name: 'Legion of Mary', desc: 'A lay apostolic association serving the Church through prayer and service.' },
       youth: { name: 'Youth Community', desc: 'A space for the younger generation to grow in faith together.', status: 'To be developed' },
@@ -211,7 +211,7 @@ Hope to live out Christ more in life?
     },
     mass: {
       title: '华语弥撒时间',
-      time: '每月第一个主日，下午 2:30',
+      time: '每月第一个主日，下午 3:30',
       location: 'Holy Family Parish - St. Teresa of Lisieux Church',
       viewMap: '查看地图',
       posterTitle: '活动公告',
@@ -255,7 +255,7 @@ Hope to live out Christ more in life?
 
 📖 欢迎加入 Youcat 小组聚会
 📅 每月一次｜第四个主日下午
-⏰ 1:30 – 3:30 PM`
+ 3:30 PM`
       },
       legion: { name: '圣母军', desc: '通过祈祷和服务为教会服务的教友使徒团体。' },
       youth: { name: '青年团体', desc: '为年轻一代提供的共同成长空间。', status: '开发中' },
@@ -566,9 +566,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
           <div className="flex items-center gap-4 cursor-pointer group" onClick={() => scrollTo('home')}>
 
-            <img src={lang === 'en' ? englishLogo : chineseLogo} alt="Logo" className="h-12 sm:h-16 md:h-20 lg:h-24 drop-shadow-sm transition-transform hover:scale-105" />
+            <img src={lang === 'en' ? englishLogo : chineseLogo} alt={lang === 'en' ? "Christchurch Catholic Chinese Community Logo" : "基督城华人天主教团体标志"} className="h-12 sm:h-16 md:h-20 lg:h-24 drop-shadow-sm transition-transform hover:scale-105" />
             <div className="hidden md:block">
-              <h1 className="text-xs font-bold text-navy leading-tight uppercase tracking-[0.2em]">CCCC</h1>
+              <div className="text-xs font-bold text-navy leading-tight uppercase tracking-[0.2em]">CCCC</div>
               <p className="text-[9px] text-grey font-medium uppercase tracking-wider">Christchurch Catholic Chinese Community</p>
             </div>
           </div>

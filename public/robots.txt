@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://christchurch-catholic-chinese.org/sitemap.xml
