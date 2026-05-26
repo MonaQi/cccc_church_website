@@ -10,6 +10,7 @@ import chineseLogo from './assets/chinese_logo.jpg';
 import activitiesImg from './assets/Activities.jpg';
 import massScheduleImg from './assets/mass_schedule.jpg';
 import profileImg from './assets/profile.jpg';
+import holyhourImg from './assets/news_photos/holyhour.jpeg';
 
 import {
   Menu,
@@ -323,6 +324,7 @@ interface NewsItem {
   date: string;
   contentEn: string;
   contentZh: string;
+  image?: string;
 }
 
 const newsItems: NewsItem[] = [
@@ -350,6 +352,40 @@ Christchurch Catholic Chinese Community`,
 五月三日下午四时弥撒开始。
 下午三时三十分将会恭念玫瑰经，弥撒后有茶聚。
 欢迎各教友带同亲友参加。`,
+  },
+  {
+    id: 'corpus-christi-jun2026',
+    tag: 'Important',
+    tagZh: '重要',
+    titleEn: 'Eucharistic Procession & Holy Hour | Mass Schedule (June 7, 2026)',
+    titleZh: '基督聖體聖血節通知｜聖體遊行及彌撒安排（6月7日）',
+    date: '7 June',
+    image: holyhourImg,
+    contentEn: `Sunday, 7 June is the Feast of Corpus Christi.
+There will be no Chinese Mass on this day.
+
+The Diocese will hold a Eucharistic Procession and Holy Hour at 2:30pm at Our Lady of Victories Church (OLV), led by Bishop Michael. All are warmly invited to participate.
+
+📍 Location: Our Lady of Victories Church
+106 Main South Road, Sockburn
+Time: Sunday, 7 June 2026, 2:30pm – 4:00pm
+
+As a result, the Chinese Catholic community Mass is cancelled for that day.
+Please attend Mass at another time at your nearest parish.
+
+You are warmly welcome to join the Eucharistic Procession at 2:30pm at OLV.`,
+    contentZh: `6月7日（主日）為基督聖體聖血節，當日沒有中文彌撒。
+
+教區將於當天下午 2:30pm，在 Our Lady of Victories Church（OLV） 舉行聖體遊行及聖體敬禮（Eucharistic Procession & Holy Hour），由教區主教 Bishop Michael 主禮，誠邀大家踴躍參與。
+
+📍 地點：Our Lady of Victories Church
+106 Main South Road, Sockburn
+🕝 時間：2026年6月7日（星期日）2:30pm – 4:00pm
+
+因此，當天華人團體中文彌撒取消。
+請大家自行安排，選擇其他時間前往就近教堂參與彌撒。
+
+歡迎大家於當日下午 2:30pm 一同前往 OLV，參與聖體遊行與敬禮。`,
   },
 ];
 
@@ -414,6 +450,13 @@ const NewsAccordion = ({ items, lang }: { items: NewsItem[]; lang: 'en' | 'zh' }
                 >
                   <div className="px-6 md:px-8 pb-8 border-t border-light-stone/60">
                     <p className="text-[10px] text-grey/50 font-light mt-5 mb-4">{item.date}</p>
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={lang === 'en' ? item.titleEn : item.titleZh}
+                        className="w-full h-auto object-contain rounded-2xl mb-6 border border-light-stone bg-soft-white"
+                      />
+                    )}
                     <p className="text-navy/70 text-sm leading-loose whitespace-pre-line font-light">
                       {content}
                     </p>
