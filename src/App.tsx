@@ -987,8 +987,8 @@ export default function App() {
                       <Globe className="w-5 h-5 text-burgundy/40" />
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">Languages</p>
-                      <p className="text-navy font-bold text-sm tracking-wide">Mandarin, Cantonese, English</p>
+                      <p className="text-[9px] font-bold text-grey/50 uppercase tracking-[0.2em] mb-2">{lang === 'en' ? 'Languages' : '语言'}</p>
+                      <p className="text-navy font-bold text-sm tracking-wide">{lang === 'en' ? 'Mandarin, Cantonese, English' : '普通话、粤语、英语'}</p>
                     </div>
                   </div>
 
