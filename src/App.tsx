@@ -527,7 +527,7 @@ const PosterCarousel = ({ images }: { images: string[] }) => {
 };
 
 export default function App() {
-  const [lang, setLang] = useState<Language>('en');
+  const [lang, setLang] = useState<Language>('zh');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeTabId, setActiveTabId] = useState('library');
