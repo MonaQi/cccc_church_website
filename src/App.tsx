@@ -387,6 +387,26 @@ You are warmly welcome to join the Eucharistic Procession at 2:30pm at OLV.`,
 
 歡迎大家於當日下午 2:30pm 一同前往 OLV，參與聖體遊行與敬禮。`,
   },
+  {
+    id: 'farewell-br-barnabas-jun2026',
+    tag: 'Event',
+    tagZh: '活动',
+    titleEn: 'Farewell Gathering for Br Barnabas',
+    titleZh: 'Br Barnabas 歡送會',
+    date: '9 June 2026',
+    contentEn: `Dear brothers and sisters in Christ,
+
+A farewell gathering for Br Barnabas has been arranged on Tuesday, 9 June, at 6:30 PM at Our Lady of Victories (OLV), 1-BJC Hall, Holy Family Parish.
+
+If you are available, you are warmly welcome to join us and bring a dish or some food to share.
+
+Thank you.`,
+    contentZh: `各位主內兄弟姊妹：
+
+六月九日（星期二）下午6:30，將於 Our Lady of Victories (OLV), 1-BJC Hall, Holy Family Parish 為 Br Barnabas 舉辦歡送會。若大家方便，歡迎前來參與，並攜帶食物一同分享。
+
+謝謝。`,
+  },
 ];
 
 const tagColors: Record<NewsTag, string> = {
