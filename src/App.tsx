@@ -388,6 +388,30 @@ You are warmly welcome to join the Eucharistic Procession at 2:30pm at OLV.`,
 歡迎大家於當日下午 2:30pm 一同前往 OLV，參與聖體遊行與敬禮。`,
   },
   {
+    id: 'chinese-mass-jul2026',
+    tag: 'Event',
+    tagZh: '活动',
+    titleEn: 'Chinese Mass – July 2026',
+    titleZh: '七月份中文彌撒通知',
+    date: '5 July 2026',
+    contentEn: `Dear brothers and sisters in Christ,
+
+The Chinese Mass for July will be celebrated on 5th July at St Teresa's Catholic Church on 1/8 Puriri Street, Riccarton. The Mass will be started at 4:00pm and the Rosary will be recited at 3:30 pm.
+
+There will be a tea gathering after the Mass.
+
+All parishioners are welcome to bring their family and friends to join us.
+
+Regards
+Christchurch Catholic Chinese Community`,
+    contentZh: `各位主內兄弟姊妹,
+
+7月份的中文彌撒定於7月5日在下午四時於St Teresa's Catholic Church 舉行，地址：1/8 Puriri Street, Riccarton。
+下午三時三十分將會恭念玫瑰經，彌撒後有茶聚。
+
+歡迎各教友帶同親友參加。`,
+  },
+  {
     id: 'farewell-br-barnabas-jun2026',
     tag: 'Event',
     tagZh: '活动',
