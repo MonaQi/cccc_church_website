@@ -11,7 +11,7 @@ import activitiesImg from './assets/Activities.jpg';
 import massScheduleImg from './assets/mass_schedule.jpg';
 import profileImg from './assets/profile.jpg';
 import holyhourImg from './assets/news_photos/holyhour.jpeg';
-import familyFellowshipImg from './assets/news_photos.jpeg';
+import familyFellowshipImg from './assets/news_photos/family_activities.jpeg';
 
 import {
   Menu,
