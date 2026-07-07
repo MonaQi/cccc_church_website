@@ -11,6 +11,7 @@ import activitiesImg from './assets/Activities.jpg';
 import massScheduleImg from './assets/mass_schedule.jpg';
 import profileImg from './assets/profile.jpg';
 import holyhourImg from './assets/news_photos/holyhour.jpeg';
+import familyFellowshipImg from './assets/news_photos.jpeg';
 
 import {
   Menu,
@@ -328,6 +329,133 @@ interface NewsItem {
 }
 
 const newsItems: NewsItem[] = [
+  {
+    id: 'family-fellowship-day-jul2026',
+    tag: 'Event',
+    tagZh: '活动',
+    titleEn: 'Family Fellowship Day',
+    titleZh: '家庭共融日（Family Fellowship Day）',
+    date: '11 July 2026',
+    image: familyFellowshipImg,
+    contentZh: `各位主內兄弟姊妹，
+
+基督城天主教华人团体
+
+
+家庭共融日（Family Fellowship Day）
+
+为了让华人教友有更多相聚、交流和彼此陪伴的机会，基督城天主教华人团体将每月举办一次「家庭共融日（Family Fellowship Day）」。
+
+欢迎所有年龄的教友、家庭、儿童、青年、长者，以及慕道友和新朋友一起参加，共度一个轻松、温馨、充满喜乐的周末。
+
+
+活动内容
+
+🎉 趣味运动
+  • 羽毛球
+  • 乒乓球
+  • 踢毽子
+
+♟ 棋牌活动
+  • 中国象棋
+  • 五子棋
+  • 扑克牌
+  • 桌游
+
+🎨 中华文化体验
+  • 书法
+  • 剪纸
+  • 折纸
+
+🙏 信仰分享
+  • 一起祈祷
+  • 圣经故事
+  • 信仰生活分享
+
+🍽️ 家庭美食分享
+  • 包饺子
+  • 做粽子
+  • 煮汤圆
+  • 或自带一道家庭美食，与大家分享
+
+
+活动时间
+
+2026年7月11日（星期六）
+上午10:30 – 下午1:00
+
+
+活动地点
+
+St Teresa Hall
+
+
+联系人
+
+📞 Austin：022 656 2705
+
+欢迎大家带着家人和朋友一起来，在欢笑中相识，在分享中成长，在信仰中彼此陪伴，共同建设一个温暖、有爱的华人教会大家庭。
+
+欢迎自带运动器材。`,
+    contentEn: `Dear brothers and sisters in Christ,
+
+
+Christchurch Catholic Chinese Community Family Fellowship Day
+
+To provide more opportunities for members of our Chinese Catholic community to gather, connect, and support one another, the Christchurch Catholic Chinese Community will hold a Family Fellowship Day every month.
+
+Everyone is warmly welcome, including parishioners of all ages, families, children, youth, seniors, catechumens, and new friends. Come and enjoy a relaxed, warm, and joyful time together.
+
+
+Activities
+
+🎉 Fun Sports
+  • Badminton
+  • Table tennis
+  • Shuttlecock kicking
+
+♟ Board & Card Games
+  • Chinese chess
+  • Gomoku
+  • Playing cards
+  • Board games
+
+🎨 Chinese Cultural Activities
+  • Calligraphy
+  • Paper cutting
+  • Origami
+
+🙏 Faith Sharing
+  • Prayer
+  • Bible stories
+  • Sharing our faith journey
+
+🍽️ Family Food Sharing
+  • Make dumplings
+  • Make zongzi
+  • Cook tangyuan
+  • Or bring a favourite homemade dish to share with everyone
+
+
+Date & Time
+
+Saturday, 11 July 2026
+10:30 AM – 1:00 PM
+
+
+Venue
+
+St Teresa Hall
+
+
+Contact
+
+📞 Austin: 022 656 2705
+
+Bring your family and friends along to meet new people, grow together through sharing, strengthen one another in faith, and help build a warm and loving Chinese Catholic community.
+
+You are welcome to bring your own sports equipment.`,
+  },
   {
     id: 'venue-change-may2026',
     tag: 'Important',
