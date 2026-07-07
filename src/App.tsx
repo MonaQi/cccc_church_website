@@ -326,6 +326,7 @@ interface NewsItem {
   contentEn: string;
   contentZh: string;
   image?: string;
+  poster?: string;
 }
 
 const newsItems: NewsItem[] = [
@@ -337,124 +338,44 @@ const newsItems: NewsItem[] = [
     titleZh: '家庭共融日（Family Fellowship Day）',
     date: '11 July 2026',
     image: familyFellowshipImg,
+    poster: familyFellowshipImg,
     contentZh: `各位主內兄弟姊妹，
+为了让华人教友有更多相聚、交流和彼此陪伴的机会，基督城天主教华人团体将每月举办一次「家庭共融日（Family Fellowship Day）」。欢迎所有年龄的教友、家庭、儿童、青年、长者，以及慕道友和新朋友一起参加，共度一个轻松、温馨、充满喜乐的周末。
 
-基督城天主教华人团体
+活动内容：
+🎉 趣味运动: 羽毛球, 乒乓球, 踢毽子
+♟ 棋牌活动: 中国象棋, 五子棋, 扑克牌, 桌游
+🎨 中华文化体验:书法, 剪纸, 折纸
+🙏 信仰分享: 一起祈祷, 圣经故事, 信仰生活分享
+🍽️ 家庭美食分享,包饺子, 做粽子, 煮汤圆, 或自带一道家庭美食，与大家分享
 
-
-家庭共融日（Family Fellowship Day）
-
-为了让华人教友有更多相聚、交流和彼此陪伴的机会，基督城天主教华人团体将每月举办一次「家庭共融日（Family Fellowship Day）」。
-
-欢迎所有年龄的教友、家庭、儿童、青年、长者，以及慕道友和新朋友一起参加，共度一个轻松、温馨、充满喜乐的周末。
-
-
-活动内容
-
-🎉 趣味运动
-  • 羽毛球
-  • 乒乓球
-  • 踢毽子
-
-♟ 棋牌活动
-  • 中国象棋
-  • 五子棋
-  • 扑克牌
-  • 桌游
-
-🎨 中华文化体验
-  • 书法
-  • 剪纸
-  • 折纸
-
-🙏 信仰分享
-  • 一起祈祷
-  • 圣经故事
-  • 信仰生活分享
-
-🍽️ 家庭美食分享
-  • 包饺子
-  • 做粽子
-  • 煮汤圆
-  • 或自带一道家庭美食，与大家分享
-
-
-活动时间
-
-2026年7月11日（星期六）
+活动时间: 2026年7月11日（星期六）
 上午10:30 – 下午1:00
 
+活动地点: St Teresa Hall
 
-活动地点
+联系人: 📞 Austin：022 656 2705
 
-St Teresa Hall
-
-
-联系人
-
-📞 Austin：022 656 2705
-
-欢迎大家带着家人和朋友一起来，在欢笑中相识，在分享中成长，在信仰中彼此陪伴，共同建设一个温暖、有爱的华人教会大家庭。
-
-欢迎自带运动器材。`,
+欢迎大家带着家人和朋友一起来，在欢笑中相识，在分享中成长，在信仰中彼此陪伴，共同建设一个温暖、有爱的华人教会大家庭。欢迎自带运动器材。`,
     contentEn: `Dear brothers and sisters in Christ,
 
+To provide more opportunities for members of our Chinese Catholic community to gather, connect, and support one another, the Christchurch Catholic Chinese Community will hold a monthly Family Fellowship Day. Everyone is warmly welcome, including parishioners of all ages, families, children, youth, seniors, catechumens, and new friends. Come and enjoy a relaxed, warm, and joyful time together.
 
-Christchurch Catholic Chinese Community Family Fellowship Day
+Activities:
+🎉 Fun Sports: Badminton, Table Tennis, Shuttlecock Kicking
+♟ Board & Card Games: Chinese Chess, Gomoku, Playing Cards, Board Games
+🎨 Chinese Cultural Activities: Calligraphy, Paper Cutting, Origami
+🙏 Faith Sharing: Prayer, Bible Stories, Faith Sharing
+🍽️ Family Food Sharing: Make Dumplings, Make Zongzi, Cook Tangyuan, or bring a favourite homemade dish to share with everyone
 
-To provide more opportunities for members of our Chinese Catholic community to gather, connect, and support one another, the Christchurch Catholic Chinese Community will hold a Family Fellowship Day every month.
-
-Everyone is warmly welcome, including parishioners of all ages, families, children, youth, seniors, catechumens, and new friends. Come and enjoy a relaxed, warm, and joyful time together.
-
-
-Activities
-
-🎉 Fun Sports
-  • Badminton
-  • Table tennis
-  • Shuttlecock kicking
-
-♟ Board & Card Games
-  • Chinese chess
-  • Gomoku
-  • Playing cards
-  • Board games
-
-🎨 Chinese Cultural Activities
-  • Calligraphy
-  • Paper cutting
-  • Origami
-
-🙏 Faith Sharing
-  • Prayer
-  • Bible stories
-  • Sharing our faith journey
-
-🍽️ Family Food Sharing
-  • Make dumplings
-  • Make zongzi
-  • Cook tangyuan
-  • Or bring a favourite homemade dish to share with everyone
-
-
-Date & Time
-
-Saturday, 11 July 2026
+Date: Saturday, 11 July 2026
 10:30 AM – 1:00 PM
 
+Venue: St Teresa Hall
 
-Venue
+Contact: 📞 Austin: 022 656 2705
 
-St Teresa Hall
-
-
-Contact
-
-📞 Austin: 022 656 2705
-
-Bring your family and friends along to meet new people, grow together through sharing, strengthen one another in faith, and help build a warm and loving Chinese Catholic community.
-
-You are welcome to bring your own sports equipment.`,
+Bring your family and friends along to meet new people, grow together through sharing, strengthen one another in faith, and help build a warm and loving Chinese Catholic community. You are welcome to bring your own sports equipment.`,
   },
   {
     id: 'venue-change-may2026',
@@ -569,77 +490,121 @@ const tagColors: Record<NewsTag, string> = {
 
 const NewsAccordion = ({ items, lang }: { items: NewsItem[]; lang: 'en' | 'zh' }) => {
   const [openId, setOpenId] = React.useState<string | null>(null);
+  const [posterSrc, setPosterSrc] = React.useState<string | null>(null);
   const sorted = [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="space-y-4">
-      {sorted.map((item) => {
-        const isOpen = openId === item.id;
-        const tag = lang === 'en' ? item.tag : item.tagZh;
-        const title = lang === 'en' ? item.titleEn : item.titleZh;
-        const content = lang === 'en' ? item.contentEn : item.contentZh;
+    <>
+      <div className="space-y-4">
+        {sorted.map((item) => {
+          const isOpen = openId === item.id;
+          const tag = lang === 'en' ? item.tag : item.tagZh;
+          const title = lang === 'en' ? item.titleEn : item.titleZh;
+          const content = lang === 'en' ? item.contentEn : item.contentZh;
 
-        return (
-          <motion.div
-            key={item.id}
-            layout
-            className={`rounded-3xl border overflow-hidden transition-all duration-300 ${isOpen ? 'border-navy/20 shadow-xl' : 'border-light-stone shadow-sm hover:shadow-md hover:border-navy/10'
-              } bg-white`}
-          >
-            {/* Header */}
-            <button
-              onClick={() => setOpenId(isOpen ? null : item.id)}
-              className="w-full flex items-center justify-between gap-4 p-6 md:p-8 text-left"
+          return (
+            <motion.div
+              key={item.id}
+              layout
+              className={`rounded-3xl border overflow-hidden transition-all duration-300 ${isOpen ? 'border-navy/20 shadow-xl' : 'border-light-stone shadow-sm hover:shadow-md hover:border-navy/10'
+                } bg-white`}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1 min-w-0">
-                <span className={`text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shrink-0 ${tagColors[item.tag]}`}>
-                  {tag}
-                </span>
-                <span className="font-bold text-navy text-sm md:text-base leading-snug">{title}</span>
-              </div>
-              <div className="flex items-center gap-4 shrink-0">
-                <span className="text-[10px] text-grey/60 font-light hidden sm:block">{item.date}</span>
-                <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                  <ChevronRight className="w-4 h-4 text-navy/40" />
-                </motion.div>
-              </div>
-            </button>
+              {/* Header */}
+              <button
+                onClick={() => setOpenId(isOpen ? null : item.id)}
+                className="w-full flex items-center justify-between gap-4 p-6 md:p-8 text-left"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1 min-w-0">
+                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shrink-0 ${tagColors[item.tag]}`}>
+                    {tag}
+                  </span>
+                  <span className="font-bold text-navy text-sm md:text-base leading-snug">{title}</span>
+                </div>
+                <div className="flex items-center gap-4 shrink-0">
+                  <span className="text-[10px] text-grey/60 font-light hidden sm:block">{item.date}</span>
+                  <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
+                    <ChevronRight className="w-4 h-4 text-navy/40" />
+                  </motion.div>
+                </div>
+              </button>
 
-            {/* Date on mobile */}
-            {!isOpen && (
-              <p className="text-[10px] text-grey/50 font-light px-6 pb-4 -mt-3 sm:hidden">{item.date}</p>
-            )}
-
-            {/* Content */}
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  key="content"
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                >
-                  <div className="px-6 md:px-8 pb-8 border-t border-light-stone/60">
-                    <p className="text-[10px] text-grey/50 font-light mt-5 mb-4">{item.date}</p>
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt={lang === 'en' ? item.titleEn : item.titleZh}
-                        className="w-full h-auto object-contain rounded-2xl mb-6 border border-light-stone bg-soft-white"
-                      />
-                    )}
-                    <p className="text-navy/70 text-sm leading-loose whitespace-pre-line font-light">
-                      {content}
-                    </p>
-                  </div>
-                </motion.div>
+              {/* Date on mobile */}
+              {!isOpen && (
+                <p className="text-[10px] text-grey/50 font-light px-6 pb-4 -mt-3 sm:hidden">{item.date}</p>
               )}
-            </AnimatePresence>
+
+              {/* Content */}
+              <AnimatePresence initial={false}>
+                {isOpen && (
+                  <motion.div
+                    key="content"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  >
+                    <div className="px-6 md:px-8 pb-8 border-t border-light-stone/60">
+                      <p className="text-[10px] text-grey/50 font-light mt-5 mb-4">{item.date}</p>
+                      <p className="text-navy/70 text-sm leading-loose whitespace-pre-line font-light">
+                        {content}
+                      </p>
+                      {item.poster && (
+                        <div className="mt-6">
+                          <button
+                            onClick={() => setPosterSrc(item.poster!)}
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-navy/20 text-[10px] font-bold uppercase tracking-[0.2em] text-navy hover:bg-navy hover:text-white transition-all duration-200 shadow-sm"
+                          >
+                            <ImageIcon className="w-3.5 h-3.5" />
+                            {lang === 'zh' ? '详情海报' : 'View Poster'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Poster Lightbox Modal */}
+      <AnimatePresence>
+        {posterSrc && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-navy/80 backdrop-blur-sm overflow-y-auto"
+            style={{ padding: '5vh 5vw' }}
+            onClick={() => setPosterSrc(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="relative flex-shrink-0"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setPosterSrc(null)}
+                className="absolute -top-4 -right-4 w-9 h-9 rounded-full bg-white text-navy flex items-center justify-center shadow-lg hover:bg-soft-white transition-colors z-10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <img
+                src={posterSrc}
+                alt="Poster"
+                className="rounded-2xl shadow-2xl border border-white/10"
+                style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain', display: 'block' }}
+              />
+            </motion.div>
           </motion.div>
-        );
-      })}
-    </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
