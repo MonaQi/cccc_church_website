@@ -12,6 +12,8 @@ import massScheduleImg from './assets/mass_schedule.jpg';
 import profileImg from './assets/profile.jpg';
 import holyhourImg from './assets/news_photos/holyhour.jpeg';
 import familyFellowshipImg from './assets/news_photos/family_activities.jpeg';
+import midAutumnImg from './assets/news_photos/mid-autumn.jpeg';
+import { eventsData } from './data/events';
 
 import {
   Menu,
@@ -314,6 +316,69 @@ const SectionTitle = ({ children, subtitle }: { children: React.ReactNode, subti
   </div>
 );
 
+// --- Shared Poster Lightbox Modal ---
+const PosterModal = ({
+  src,
+  alt = 'Event Poster',
+  onClose,
+}: {
+  src: string | null;
+  alt?: string;
+  onClose: () => void;
+}) => {
+  useEffect(() => {
+    if (!src) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [src, onClose]);
+
+  return (
+    <AnimatePresence>
+      {src && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-navy/85 backdrop-blur-md overflow-y-auto p-4 sm:p-6 md:p-10"
+          onClick={onClose}
+        >
+          <div className="relative max-w-4xl w-full flex flex-col items-center justify-center my-auto py-8">
+            <button
+              onClick={onClose}
+              className="fixed top-4 right-4 md:top-8 md:right-8 z-50 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-navy flex items-center justify-center shadow-2xl transition-all hover:scale-105"
+              aria-label="Close poster"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="relative max-w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={src}
+                alt={alt}
+                className="w-auto h-auto max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-white/20 bg-white"
+              />
+            </motion.div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 // --- News Data ---
 type NewsTag = 'Important' | 'Event' | 'News';
 interface NewsItem {
@@ -330,6 +395,80 @@ interface NewsItem {
 }
 
 const newsItems: NewsItem[] = [
+  {
+    id: 'mid-autumn-gathering-2026',
+    tag: 'Event',
+    tagZh: '活动',
+    titleEn: 'Christchurch Catholic Chinese Community | Mid-Autumn Gathering',
+    titleZh: '基督城天主教华人团体｜中秋聚会',
+    date: '26 September 2026',
+    image: midAutumnImg,
+    poster: midAutumnImg,
+    contentZh: `月圆中秋 · 春满基督城
+
+在南半球的春天，我们一起过一个不一样的中秋！
+
+📅 时间
+2026年9月26日（星期六）
+上午 11:00 – 下午 2:00
+
+📍 地点
+Mona Vale Garden Park
+Mona Vale Bath House 附近草坪
+
+🙏 特别嘉宾
+李神父（Fr Justin）将从台湾远道而来，与大家一起聚会，也会和大家分享。
+
+🍱 活动内容
+轻松 · 自在 · 老少皆宜
+🌸 赏花踏春
+🥮 分享美食、品尝月饼
+📖 中秋诗歌朗诵
+👧 儿童游戏
+🙏 祈祷与信仰分享
+👨‍👩‍👧‍👦 家庭交流、自由聚会
+
+大家可以各自准备一些家庭美食，带来一起野餐、分享。团体也会准备一些月饼，和大家一起品尝。
+
+欢迎华人教友家庭、儿童、青年、长者、慕道友和新朋友参加！
+
+带上家人，带上一份美食，在基督城的春天，一起团圆！
+
+联系人：Austin
+📞 022 656 2705`,
+    contentEn: `Full Moon, Spring in Christchurch
+
+Here in the Southern Hemisphere, we welcome the Mid-Autumn Festival in the beautiful springtime of Christchurch!
+
+📅 Date & Time
+Saturday, 26 September 2026
+11:00 am – 2:00 pm
+
+📍 Location
+Mona Vale Garden Park
+Lawn area near Mona Vale Bath House
+
+🙏 Special Guest
+Fr Justin will be joining us, travelling from Taiwan. He will spend time with us and share some of his experiences and reflections.
+
+🍱 Activities
+Relaxed · Casual · Fun for all ages
+🌸 Enjoy the spring flowers and garden
+🥮 Share food and enjoy mooncakes
+📖 Mid-Autumn poetry
+👧 Games and activities for children
+🙏 Prayer and faith sharing
+👨‍👩‍👧‍👦 Family time and fellowship
+
+Everyone is welcome to bring some food from home to share and enjoy a relaxed picnic together. The community will also provide some mooncakes for everyone to enjoy.
+
+We warmly welcome Chinese Catholic families, children, young people, seniors, catechumens, and friends who would like to join us!
+
+Bring your family, bring a dish to share, and let’s celebrate together in the springtime of Christchurch!
+
+Contact: Austin
+📞 022 656 2705`,
+  },
   {
     id: 'family-fellowship-day-jul2026',
     tag: 'Event',
@@ -399,7 +538,7 @@ Christchurch Catholic Chinese Community`,
 从五月份开始，我们的中文弥撒将会移师到 St Teresa's Catholic Church 举行。
 地址：1/8 Puriri Street, Riccarton。
 五月三日下午四时弥撒开始。
-下午三时三十分将会恭念玫瑰经，弥撒后有茶聚。
+下月三日下午三时三十分将会恭念玫瑰经，弥撒后有茶聚。
 欢迎各教友带同亲友参加。`,
   },
   {
@@ -408,7 +547,7 @@ Christchurch Catholic Chinese Community`,
     tagZh: '重要',
     titleEn: 'Eucharistic Procession & Holy Hour | Mass Schedule (June 7, 2026)',
     titleZh: '基督聖體聖血節通知｜聖體遊行及彌撒安排（6月7日）',
-    date: '7 June',
+    date: '7 June 2026',
     image: holyhourImg,
     contentEn: `Sunday, 7 June is the Feast of Corpus Christi.
 There will be no Chinese Mass on this day.
@@ -488,123 +627,106 @@ const tagColors: Record<NewsTag, string> = {
   News: 'bg-beige/60 text-navy/70',
 };
 
-const NewsAccordion = ({ items, lang }: { items: NewsItem[]; lang: 'en' | 'zh' }) => {
-  const [openId, setOpenId] = React.useState<string | null>(null);
-  const [posterSrc, setPosterSrc] = React.useState<string | null>(null);
+const NewsAccordion = ({
+  items,
+  lang,
+  openId,
+  onOpenIdChange,
+  onOpenPoster,
+}: {
+  items: NewsItem[];
+  lang: 'en' | 'zh';
+  openId?: string | null;
+  onOpenIdChange?: (id: string | null) => void;
+  onOpenPoster?: (poster: string) => void;
+}) => {
+  const [internalOpenId, setInternalOpenId] = React.useState<string | null>(null);
+  const activeOpenId = openId !== undefined ? openId : internalOpenId;
+
+  const toggleOpen = (id: string) => {
+    const nextId = activeOpenId === id ? null : id;
+    if (onOpenIdChange) {
+      onOpenIdChange(nextId);
+    } else {
+      setInternalOpenId(nextId);
+    }
+  };
+
   const sorted = [...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <>
-      <div className="space-y-4">
-        {sorted.map((item) => {
-          const isOpen = openId === item.id;
-          const tag = lang === 'en' ? item.tag : item.tagZh;
-          const title = lang === 'en' ? item.titleEn : item.titleZh;
-          const content = lang === 'en' ? item.contentEn : item.contentZh;
+    <div className="space-y-4">
+      {sorted.map((item) => {
+        const isOpen = activeOpenId === item.id;
+        const tag = lang === 'en' ? item.tag : item.tagZh;
+        const title = lang === 'en' ? item.titleEn : item.titleZh;
+        const content = lang === 'en' ? item.contentEn : item.contentZh;
 
-          return (
-            <motion.div
-              key={item.id}
-              layout
-              className={`rounded-3xl border overflow-hidden transition-all duration-300 ${isOpen ? 'border-navy/20 shadow-xl' : 'border-light-stone shadow-sm hover:shadow-md hover:border-navy/10'
-                } bg-white`}
-            >
-              {/* Header */}
-              <button
-                onClick={() => setOpenId(isOpen ? null : item.id)}
-                className="w-full flex items-center justify-between gap-4 p-6 md:p-8 text-left"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1 min-w-0">
-                  <span className={`text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shrink-0 ${tagColors[item.tag]}`}>
-                    {tag}
-                  </span>
-                  <span className="font-bold text-navy text-sm md:text-base leading-snug">{title}</span>
-                </div>
-                <div className="flex items-center gap-4 shrink-0">
-                  <span className="text-[10px] text-grey/60 font-light hidden sm:block">{item.date}</span>
-                  <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                    <ChevronRight className="w-4 h-4 text-navy/40" />
-                  </motion.div>
-                </div>
-              </button>
-
-              {/* Date on mobile */}
-              {!isOpen && (
-                <p className="text-[10px] text-grey/50 font-light px-6 pb-4 -mt-3 sm:hidden">{item.date}</p>
-              )}
-
-              {/* Content */}
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    key="content"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  >
-                    <div className="px-6 md:px-8 pb-8 border-t border-light-stone/60">
-                      <p className="text-[10px] text-grey/50 font-light mt-5 mb-4">{item.date}</p>
-                      <p className="text-navy/70 text-sm leading-loose whitespace-pre-line font-light">
-                        {content}
-                      </p>
-                      {item.poster && (
-                        <div className="mt-6">
-                          <button
-                            onClick={() => setPosterSrc(item.poster!)}
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-navy/20 text-[10px] font-bold uppercase tracking-[0.2em] text-navy hover:bg-navy hover:text-white transition-all duration-200 shadow-sm"
-                          >
-                            <ImageIcon className="w-3.5 h-3.5" />
-                            {lang === 'zh' ? '详情海报' : 'View Poster'}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Poster Lightbox Modal */}
-      <AnimatePresence>
-        {posterSrc && (
+        return (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-navy/80 backdrop-blur-sm overflow-y-auto"
-            style={{ padding: '5vh 5vw' }}
-            onClick={() => setPosterSrc(null)}
+            key={item.id}
+            layout
+            className={`rounded-3xl border overflow-hidden transition-all duration-300 ${isOpen ? 'border-navy/20 shadow-xl' : 'border-light-stone shadow-sm hover:shadow-md hover:border-navy/10'
+              } bg-white`}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="relative flex-shrink-0"
-              onClick={(e) => e.stopPropagation()}
+            {/* Header */}
+            <button
+              onClick={() => toggleOpen(item.id)}
+              className="w-full flex items-center justify-between gap-4 p-6 md:p-8 text-left"
             >
-              <button
-                onClick={() => setPosterSrc(null)}
-                className="absolute -top-4 -right-4 w-9 h-9 rounded-full bg-white text-navy flex items-center justify-center shadow-lg hover:bg-soft-white transition-colors z-10"
-              >
-                <X className="w-4 h-4" />
-              </button>
-              <img
-                src={posterSrc}
-                alt="Poster"
-                className="rounded-2xl shadow-2xl border border-white/10"
-                style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain', display: 'block' }}
-              />
-            </motion.div>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1 min-w-0">
+                <span className={`text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shrink-0 ${tagColors[item.tag]}`}>
+                  {tag}
+                </span>
+                <span className="font-bold text-navy text-sm md:text-base leading-snug">{title}</span>
+              </div>
+              <div className="flex items-center gap-4 shrink-0">
+                <span className="text-[10px] text-grey/60 font-light hidden sm:block">{item.date}</span>
+                <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
+                  <ChevronRight className="w-4 h-4 text-navy/40" />
+                </motion.div>
+              </div>
+            </button>
+
+            {/* Date on mobile */}
+            {!isOpen && (
+              <p className="text-[10px] text-grey/50 font-light px-6 pb-4 -mt-3 sm:hidden">{item.date}</p>
+            )}
+
+            {/* Content */}
+            <AnimatePresence initial={false}>
+              {isOpen && (
+                <motion.div
+                  key="content"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                >
+                  <div className="px-6 md:px-8 pb-8 border-t border-light-stone/60">
+                    <p className="text-[10px] text-grey/50 font-light mt-5 mb-4">{item.date}</p>
+                    <p className="text-navy/70 text-sm leading-loose whitespace-pre-line font-light">
+                      {content}
+                    </p>
+                    {item.poster && (
+                      <div className="mt-6">
+                        <button
+                          onClick={() => onOpenPoster ? onOpenPoster(item.poster!) : null}
+                          className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-navy/20 text-[10px] font-bold uppercase tracking-[0.2em] text-navy hover:bg-navy hover:text-white transition-all duration-200 shadow-sm"
+                        >
+                          <ImageIcon className="w-3.5 h-3.5" />
+                          {lang === 'zh' ? '详情海报' : 'View Poster'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        );
+      })}
+    </div>
   );
 };
 
@@ -670,6 +792,8 @@ export default function App() {
   const [activeTabId, setActiveTabId] = useState('library');
   const [currentPage, setCurrentPage] = useState<'home' | 'library' | 'gallery'>('home');
   const [isPosterOpen, setIsPosterOpen] = useState(false);
+  const [activePosterModal, setActivePosterModal] = useState<string | null>(null);
+  const [openNewsId, setOpenNewsId] = useState<string | null>(null);
 
   const t = translations[lang];
 
@@ -881,7 +1005,7 @@ export default function App() {
           {/* --- Sunday Mass Section --- */}
           <section id="mass" className="py-32 px-8 max-w-3xl mx-auto">
             <SectionTitle subtitle="Worship">{t.mass.title}</SectionTitle>
-
+ 
             <div
               onClick={() => setIsPosterOpen(true)}
               className="bg-white p-12 md:p-16 rounded-[4rem] shadow-xl border border-light-stone/50 mt-16 text-center group transition-all hover:shadow-2xl hover:-translate-y-2 hover:border-transparent cursor-pointer relative overflow-hidden"
@@ -950,6 +1074,55 @@ export default function App() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* --- Upcoming Event Preview Section --- */}
+          <section id="upcoming-event" className="pb-20 px-8 max-w-3xl mx-auto">
+            <div className="bg-gradient-to-br from-soft-white via-white to-light-stone/30 p-8 sm:p-10 md:p-12 rounded-[3rem] border border-light-stone/60 shadow-xl relative overflow-hidden transition-all hover:shadow-2xl">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 border-b border-light-stone/60 pb-6">
+                <span className="text-[9px] font-bold uppercase tracking-[0.25em] px-3.5 py-1.5 rounded-full bg-burgundy/10 text-burgundy">
+                  {lang === 'en' ? 'Upcoming Event' : '最新活动'}
+                </span>
+                <span className="text-xs text-grey/70 font-medium">
+                  {lang === 'en' ? '26 September 2026 · 11:00 am–2:00 pm' : '2026年9月26日 · 11:00–14:00'}
+                </span>
+              </div>
+
+              <div className="space-y-4 mb-8">
+                <h3 className="text-2xl md:text-3xl font-serif text-navy">
+                  {lang === 'en' ? 'Mid-Autumn Gathering' : '中秋聚会'}
+                </h3>
+                
+                <p className="text-xs md:text-sm text-grey font-serif italic">
+                  {lang === 'en' ? 'Full Moon, Spring in Christchurch' : '月圆中秋 · 春满基督城'}
+                </p>
+
+                <div className="flex items-center gap-2 text-xs text-navy/80 font-medium pt-1">
+                  <MapPin className="w-4 h-4 text-burgundy shrink-0" />
+                  <span>Mona Vale Garden Park</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t border-light-stone/40">
+                <button
+                  onClick={() => {
+                    setOpenNewsId('mid-autumn-gathering-2026');
+                    scrollTo('newsletter');
+                  }}
+                  className="px-6 py-3.5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md flex items-center justify-center gap-2"
+                >
+                  {lang === 'en' ? 'View Details' : '查看详情'}
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => setActivePosterModal(midAutumnImg)}
+                  className="px-6 py-3.5 bg-white border border-navy/20 text-navy rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-soft-white transition-all shadow-sm flex items-center justify-center gap-2"
+                >
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  {lang === 'zh' ? '详情海报' : 'View Poster'}
+                </button>
+              </div>
+            </div>
+          </section>
 
           {/* --- About Us Section --- */}
           <section id="about" className="py-32 bg-soft-white">
@@ -1092,7 +1265,13 @@ export default function App() {
           {/* --- News / Notifications Section --- */}
           <section id="newsletter" className="py-32 px-8 max-w-3xl mx-auto">
             <SectionTitle subtitle={lang === 'en' ? 'Announcements' : '公告'}>{t.newsletter.title}</SectionTitle>
-            <NewsAccordion items={newsItems} lang={lang} />
+            <NewsAccordion
+              items={newsItems}
+              lang={lang}
+              openId={openNewsId}
+              onOpenIdChange={setOpenNewsId}
+              onOpenPoster={(poster) => setActivePosterModal(poster)}
+            />
           </section>
 
           {/* --- Contact Section --- */}
@@ -1205,6 +1384,8 @@ export default function App() {
           </div>
         </div>
       </footer>
+      {/* --- Poster Lightbox Modal --- */}
+      <PosterModal src={activePosterModal} onClose={() => setActivePosterModal(null)} />
     </div>
   );
 }
