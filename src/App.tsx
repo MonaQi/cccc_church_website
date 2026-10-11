@@ -13,6 +13,7 @@ import profileImg from './assets/profile.jpg';
 import holyhourImg from './assets/news_photos/holyhour.jpeg';
 import familyFellowshipImg from './assets/news_photos/family_activities.jpeg';
 import midAutumnImg from './assets/news_photos/mid-autumn.jpeg';
+import sportsDayImg from './assets/news_photos/sports_day_1710.jpeg';
 import { eventsData } from './data/events';
 
 import {
@@ -468,6 +469,52 @@ Bring your family, bring a dish to share, and let’s celebrate together in the 
 
 Contact: Austin
 📞 022 656 2705`,
+  },
+  {
+    id: 'sports-day-oct2026',
+    tag: 'Event',
+    tagZh: '活动',
+    titleEn: '🏸 Family Fellowship Day · Sports & Activities',
+    titleZh: '🏸 家庭共融日 · 体育运动交流',
+    date: '17 October 2026',
+    image: sportsDayImg,
+    poster: sportsDayImg,
+    contentZh: `🏸 家庭共融日 · 体育运动交流
+
+📅 时间
+2026年10月17日（星期六）
+下午 3:00 – 5:00
+
+📍 地点
+Rolleston · Selwyn Sports Centre
+
+🏸 活动内容
+🏸 羽毛球
+🏓 乒乓球
+🥒 匹克球
+⭕ 呼啦圈 · 空竹 · 跳绳等活动
+
+欢迎大家一起来运动、交流，也欢迎带孩子来体验！
+
+🙏 苏神父也会加入我们！`,
+    contentEn: `🏸 Family Fellowship Day · Sports & Activities
+
+📅 Date & Time
+Saturday, 17 October 2026
+3:00 pm – 5:00 pm
+
+📍 Location
+Rolleston · Selwyn Sports Centre
+
+🏸 Activities
+🏸 Badminton
+🏓 Table Tennis
+🥒 Pickleball
+⭕ Hula hoop, diabolo, skipping rope and more
+
+Everyone is welcome to join us for an afternoon of sports, fellowship and fun. Families are very welcome to bring their children along to participate and try the activities!
+
+🙏 Fr Su will also be joining us!`,
   },
   {
     id: 'family-fellowship-day-jul2026',
@@ -1075,52 +1122,105 @@ export default function App() {
             )}
           </AnimatePresence>
 
-          {/* --- Upcoming Event Preview Section --- */}
+          {/* --- Upcoming Events Preview Section --- */}
           <section id="upcoming-event" className="pb-20 px-8 max-w-3xl mx-auto">
-            <div className="bg-gradient-to-br from-soft-white via-white to-light-stone/30 p-8 sm:p-10 md:p-12 rounded-[3rem] border border-light-stone/60 shadow-xl relative overflow-hidden transition-all hover:shadow-2xl">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 border-b border-light-stone/60 pb-6">
-                <span className="text-[9px] font-bold uppercase tracking-[0.25em] px-3.5 py-1.5 rounded-full bg-burgundy/10 text-burgundy">
-                  {lang === 'en' ? 'Upcoming Event' : '最新活动'}
-                </span>
-                <span className="text-xs text-grey/70 font-medium">
-                  {lang === 'en' ? '26 September 2026 · 11:00 am–2:00 pm' : '2026年9月26日 · 11:00–14:00'}
-                </span>
-              </div>
+            <div className="space-y-6">
 
-              <div className="space-y-4 mb-8">
-                <h3 className="text-2xl md:text-3xl font-serif text-navy">
-                  {lang === 'en' ? 'Mid-Autumn Gathering' : '中秋聚会'}
-                </h3>
-                
-                <p className="text-xs md:text-sm text-grey font-serif italic">
-                  {lang === 'en' ? 'Full Moon, Spring in Christchurch' : '月圆中秋 · 春满基督城'}
-                </p>
+              {/* Card 1: Mid-Autumn Gathering */}
+              <div className="bg-gradient-to-br from-soft-white via-white to-light-stone/30 p-8 sm:p-10 md:p-12 rounded-[3rem] border border-light-stone/60 shadow-xl relative overflow-hidden transition-all hover:shadow-2xl">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 border-b border-light-stone/60 pb-6">
+                  <span className="text-[9px] font-bold uppercase tracking-[0.25em] px-3.5 py-1.5 rounded-full bg-burgundy/10 text-burgundy">
+                    {lang === 'en' ? 'Upcoming Event' : '最新活动'}
+                  </span>
+                  <span className="text-xs text-grey/70 font-medium">
+                    {lang === 'en' ? '26 September 2026 · 11:00 am–2:00 pm' : '2026年9月26日 · 11:00–14:00'}
+                  </span>
+                </div>
 
-                <div className="flex items-center gap-2 text-xs text-navy/80 font-medium pt-1">
-                  <MapPin className="w-4 h-4 text-burgundy shrink-0" />
-                  <span>Mona Vale Garden Park</span>
+                <div className="space-y-4 mb-8">
+                  <h3 className="text-2xl md:text-3xl font-serif text-navy">
+                    {lang === 'en' ? 'Mid-Autumn Gathering' : '中秋聚会'}
+                  </h3>
+                  <p className="text-xs md:text-sm text-grey font-serif italic">
+                    {lang === 'en' ? 'Full Moon, Spring in Christchurch' : '月圆中秋 · 春满基督城'}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-navy/80 font-medium pt-1">
+                    <MapPin className="w-4 h-4 text-burgundy shrink-0" />
+                    <span>Mona Vale Garden Park</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t border-light-stone/40">
+                  <button
+                    onClick={() => {
+                      setOpenNewsId('mid-autumn-gathering-2026');
+                      scrollTo('newsletter');
+                    }}
+                    className="px-6 py-3.5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md flex items-center justify-center gap-2"
+                  >
+                    {lang === 'en' ? 'View Details' : '查看详情'}
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => setActivePosterModal(midAutumnImg)}
+                    className="px-6 py-3.5 bg-white border border-navy/20 text-navy rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-soft-white transition-all shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    {lang === 'zh' ? '详情海报' : 'View Poster'}
+                  </button>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t border-light-stone/40">
-                <button
-                  onClick={() => {
-                    setOpenNewsId('mid-autumn-gathering-2026');
-                    scrollTo('newsletter');
-                  }}
-                  className="px-6 py-3.5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md flex items-center justify-center gap-2"
-                >
-                  {lang === 'en' ? 'View Details' : '查看详情'}
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={() => setActivePosterModal(midAutumnImg)}
-                  className="px-6 py-3.5 bg-white border border-navy/20 text-navy rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-soft-white transition-all shadow-sm flex items-center justify-center gap-2"
-                >
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  {lang === 'zh' ? '详情海报' : 'View Poster'}
-                </button>
+              {/* Card 2: Family Fellowship Day – Sports & Activities */}
+              <div className="bg-gradient-to-br from-soft-white via-white to-light-stone/30 p-8 sm:p-10 md:p-12 rounded-[3rem] border border-light-stone/60 shadow-xl relative overflow-hidden transition-all hover:shadow-2xl">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 border-b border-light-stone/60 pb-6">
+                  <span className="text-[9px] font-bold uppercase tracking-[0.25em] px-3.5 py-1.5 rounded-full bg-burgundy/10 text-burgundy">
+                    {lang === 'en' ? 'Upcoming Event' : '最新活动'}
+                  </span>
+                  <span className="text-xs text-grey/70 font-medium">
+                    {lang === 'en' ? 'Saturday, 17 October · 3:00–5:00 pm' : '10月17日（星期六） · 15:00–17:00'}
+                  </span>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  <h3 className="text-2xl md:text-3xl font-serif text-navy">
+                    {lang === 'en' ? '🏸 Family Fellowship Day · Sports & Activities' : '🏸 家庭共融日 · 体育运动交流'}
+                  </h3>
+                  <p className="text-xs md:text-sm text-grey font-light leading-relaxed">
+                    {lang === 'en'
+                      ? 'Badminton · Table Tennis · Pickleball · Family Activities'
+                      : '羽毛球 · 乒乓球 · 匹克球 · 亲子活动'}
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-navy/80 font-medium pt-1">
+                    <MapPin className="w-4 h-4 text-burgundy shrink-0" />
+                    <span>Rolleston · Selwyn Sports Centre</span>
+                  </div>
+                  <p className="text-xs text-burgundy font-bold pt-1">
+                    {lang === 'en' ? '🙏 Fr Su will also be joining us!' : '🙏 苏神父也会加入我们！'}
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-2 border-t border-light-stone/40">
+                  <button
+                    onClick={() => {
+                      setOpenNewsId('sports-day-oct2026');
+                      scrollTo('newsletter');
+                    }}
+                    className="px-6 py-3.5 bg-navy text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-burgundy transition-all shadow-md flex items-center justify-center gap-2"
+                  >
+                    {lang === 'en' ? 'View Details' : '查看详情'}
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => setActivePosterModal(sportsDayImg)}
+                    className="px-6 py-3.5 bg-white border border-navy/20 text-navy rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-soft-white transition-all shadow-sm flex items-center justify-center gap-2"
+                  >
+                    <ImageIcon className="w-3.5 h-3.5" />
+                    {lang === 'zh' ? '详情海报' : 'View Poster'}
+                  </button>
+                </div>
               </div>
+
             </div>
           </section>
 
